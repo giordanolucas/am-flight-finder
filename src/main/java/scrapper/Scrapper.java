@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -27,7 +30,7 @@ public class Scrapper {
         client.setReadTimeout(60, TimeUnit.SECONDS);    // socket timeout
     }
 
-    public static void main (String [] arguments) throws IOException {
+    public static void main (String [] arguments) throws IOException, ExecutionException, InterruptedException {
         configureClient();
 
         String origin = "BUE";
@@ -39,13 +42,23 @@ public class Scrapper {
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantity);
         System.out.println("Query count: " + flightInfoList.size());
 
-        List<ScrappedFlight> allResults = new LinkedList<>();
+        ForkJoinPool forkJoinPool = new ForkJoinPool(1);
+        List<ScrappedFlight> allResults = forkJoinPool.submit(() ->
+                flightInfoList.parallelStream().flatMap(i -> {
+                    try {
+                        System.out.println("Current query: " + i.printInfo());
+                        return scrap(i).stream();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+        ).get()
+         .filter(Objects::nonNull)
+         .collect(Collectors.toList());
 
-        for(FlightInfo flightInfo : flightInfoList){
-            System.out.println("Current query: " + flightInfo.printInfo());
-            allResults.addAll(scrap(flightInfo));
-        }
 
+        System.out.println("All queries finished, " + allResults.size() + " results.");
         System.out.print(allResults.toString());
     }
 
