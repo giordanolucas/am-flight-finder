@@ -60,7 +60,7 @@ public class Scrapper {
 
 
         System.out.println("All queries finished, " + allResults.size() + " results.");
-        allResults.stream().map(x -> x.getFlightInfo().printInfo() + ": " + x.getPrice()).sorted().forEach(System.out::println);
+        allResults.stream().map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo()).sorted().forEach(System.out::println);
     }
 
     public static List<ScrappedFlight> scrap(FlightInfo flightInfo) throws IOException {
