@@ -1,12 +1,12 @@
 
-package model.almundo;
+package model.am;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class Aircraft {
+public class MarketingCarrier {
 
     @SerializedName("code")
     private String mCode;

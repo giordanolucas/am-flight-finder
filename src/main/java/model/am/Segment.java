@@ -1,5 +1,5 @@
 
-package model.almundo;
+package model.am;
 
 import java.util.List;
 import javax.annotation.Generated;

@@ -4,38 +4,45 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import model.almundo.FlightResult;
+import model.am.FlightResult;
 import model.internal.FlightInfo;
 import model.internal.ScrappedFlight;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Scrapper {
-    private static OkHttpClient client = new OkHttpClient();
+    private static OkHttpClient client;
 
-    public static void main ( String [] arguments ) throws IOException {
+    private static void configureClient() {
+        client = new OkHttpClient();
         client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(60, TimeUnit.SECONDS);    // socket timeout
+    }
 
-        int range = 12;
-        int maxMonthDay = 30;
+    public static void main (String [] arguments) throws IOException {
+        configureClient();
 
-        List<ScrappedFlight> allResults = new ArrayList<>();
+        String origin = "BUE";
+        String destination = "BKK";
+        LocalDate dateFrom = LocalDate.of(2018, 9, 1);
+        LocalDate dateTo = LocalDate.of(2018, 10, 25);
+        Integer dayQuantity = 10;
 
-        for(int i = 1; i <= maxMonthDay; i++){
-            if(i + range > maxMonthDay){
-                break;
-            }
+        List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantity);
+        System.out.println("Query count: " + flightInfoList.size());
 
-            String min = i < 10 ? "0"+i : ""+i;
-            String max = (i + range) < 10 ? "0"+(i + range) : ""+(i + range);
+        List<ScrappedFlight> allResults = new LinkedList<>();
 
-            FlightInfo flightInfo = new FlightInfo("BUE", "BKK", "2018-05-" + min, "2018-05-" + max);
+        for(FlightInfo flightInfo : flightInfoList){
+            System.out.println("Current query: " + flightInfo.printInfo());
             allResults.addAll(scrap(flightInfo));
         }
 

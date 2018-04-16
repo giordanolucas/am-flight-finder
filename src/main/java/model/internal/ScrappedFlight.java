@@ -1,7 +1,7 @@
 package model.internal;
 
-import model.almundo.Choice;
-import model.almundo.Cluster;
+import model.am.Choice;
+import model.am.Cluster;
 
 import java.util.LinkedList;
 import java.util.List;

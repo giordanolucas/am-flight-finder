@@ -1,17 +1,17 @@
 
-package model.almundo;
+package model.am;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class Currency {
+public class OperatingCarrier {
 
     @SerializedName("code")
     private String mCode;
-    @SerializedName("prefix")
-    private String mPrefix;
+    @SerializedName("name")
+    private String mName;
 
     public String getCode() {
         return mCode;
@@ -21,12 +21,12 @@ public class Currency {
         mCode = code;
     }
 
-    public String getPrefix() {
-        return mPrefix;
+    public String getName() {
+        return mName;
     }
 
-    public void setPrefix(String prefix) {
-        mPrefix = prefix;
+    public void setName(String name) {
+        mName = name;
     }
 
 }

@@ -1,5 +1,7 @@
 package model.internal;
 
+import util.DateUtils;
+
 public class FlightInfo {
     private String origin;
     private String destination;
@@ -43,5 +45,9 @@ public class FlightInfo {
 
     public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
+    }
+
+    public String printInfo() {
+        return origin + " -> " + destination + ": " + dateFrom + " -> " + dateTo;
     }
 }
