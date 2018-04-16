@@ -4,6 +4,7 @@ import model.internal.ScrappedFlight;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ResultHandler {
     protected List<ScrappedFlight> allResults = new ArrayList<>();
@@ -29,6 +30,7 @@ public class ResultHandler {
 
     public void printResults(){
         allResults.stream()
+                .filter(Objects::nonNull)
                 .sorted((x, y) -> (x.getPrice().equals(y.getPrice())) ? 0 : (x.getPrice() > y.getPrice() ? 1 : -1))
                 .map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo())
                 .forEach(System.out::println);

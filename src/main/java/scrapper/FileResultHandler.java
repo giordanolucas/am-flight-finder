@@ -1,6 +1,7 @@
 package scrapper;
 
 import java.io.*;
+import java.util.Objects;
 
 public class FileResultHandler extends ResultHandler {
 
@@ -21,6 +22,7 @@ public class FileResultHandler extends ResultHandler {
 
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"))) {
             allResults.stream()
+                .filter(Objects::nonNull)
                 .sorted((x, y) -> (x.getPrice().equals(y.getPrice())) ? 0 : (x.getPrice() > y.getPrice() ? 1 : -1))
                 .map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo())
                 .forEach(x -> {
