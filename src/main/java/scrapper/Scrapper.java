@@ -11,7 +11,6 @@ import model.internal.ScrappedFlight;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
@@ -32,13 +31,14 @@ public class Scrapper {
 
         String origin = "BUE";
         //List<String> destinations = Arrays.asList("TYO", "HND", "NRT");
-        String destination = "BKK";
+        String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 9, 1);
-        LocalDate dateTo = LocalDate.of(2018, 9, 20);
-        Integer dayQuantityMin = 12;
-        Integer dayQuantityMax = 18;
+        LocalDate dateTo = LocalDate.of(2018, 11, 17);
+        Integer dayQuantityMin = 14;
+        Integer dayQuantityMax = 17;
+        List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
 
-        List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax);
+        List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
         System.out.println("Query count: " + flightInfoList.size());
 
         ForkJoinPool forkJoinPool = new ForkJoinPool(4);
@@ -61,13 +61,20 @@ public class Scrapper {
         allResults.stream().map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo()).sorted().forEach(System.out::println);
     }
 
+
+
     public static List<ScrappedFlight> scrap(FlightInfo flightInfo) throws IOException {
-        Request request = new Request.Builder()
+        Request.Builder builder = new Request.Builder()
                 .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightInfo.getDateFrom() + "," + flightInfo.getDateTo() + "&from=" + flightInfo.getOrigin() + "," + flightInfo.getDestination() + "&sortBy=PRICE&to=" + flightInfo.getDestination() + "," + flightInfo.getOrigin())
                 .get()
                 .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b")
-                .build();
+                .addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");
+
+        if(flightInfo.getProvider() != null && !flightInfo.getProvider().trim().equalsIgnoreCase("")){
+            builder.addHeader("X-AM-PROVIDER", flightInfo.getProvider());
+        }
+
+        Request request = builder.build();
 
         return getScrappedFlights(flightInfo, request);
     }
@@ -87,9 +94,14 @@ public class Scrapper {
                 return new ArrayList<>();
             }
 
-            return flightResult.getResults().getClusters()
-                    .stream().map(x -> new ScrappedFlight(flightInfo, x)).collect(Collectors.toList());
-
+            try{
+                return flightResult.getResults().getClusters()
+                        .stream().map(x -> new ScrappedFlight(flightInfo, x)).collect(Collectors.toList());
+            }
+            catch (NullPointerException e){
+                System.out.println("NPE for " + flightInfo.printInfo() + ". Date is probably out of range.");
+                return null;
+            }
         }
         catch (SocketTimeoutException e){
             return  getScrappedFlights(flightInfo, request);
