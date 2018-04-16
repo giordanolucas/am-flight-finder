@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
@@ -34,9 +31,10 @@ public class Scrapper {
         configureClient();
 
         String origin = "BUE";
-        String destination = "TYO";
+        //List<String> destinations = Arrays.asList("TYO", "HND", "NRT");
+        String destination = "BKK";
         LocalDate dateFrom = LocalDate.of(2018, 9, 1);
-        LocalDate dateTo = LocalDate.of(2019, 3, 15);
+        LocalDate dateTo = LocalDate.of(2018, 9, 20);
         Integer dayQuantityMin = 12;
         Integer dayQuantityMax = 18;
 
@@ -78,6 +76,20 @@ public class Scrapper {
         Response response = null;
         try{
             response = client.newCall(request).execute();
+
+            FlightResult flightResult;
+            try{
+                Gson gson = new Gson();
+                flightResult = gson.fromJson(response.body().charStream(), FlightResult.class);
+            }
+            catch (Exception e){
+                System.out.println("Error getting object from JSON: " + flightInfo.printInfo());
+                return new ArrayList<>();
+            }
+
+            return flightResult.getResults().getClusters()
+                    .stream().map(x -> new ScrappedFlight(flightInfo, x)).collect(Collectors.toList());
+
         }
         catch (SocketTimeoutException e){
             return  getScrappedFlights(flightInfo, request);
@@ -87,18 +99,5 @@ public class Scrapper {
                 response.body().close();
             }
         }
-
-        FlightResult flightResult;
-        try{
-            Gson gson = new Gson();
-            flightResult = gson.fromJson(response.body().charStream(), FlightResult.class);
-        }
-        catch (Exception e){
-            System.out.println("Error getting object from JSON: " + flightInfo.printInfo());
-            return new ArrayList<>();
-        }
-
-        return flightResult.getResults().getClusters()
-                .stream().map(x -> new ScrappedFlight(flightInfo, x)).collect(Collectors.toList());
     }
 }
