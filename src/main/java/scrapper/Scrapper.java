@@ -31,36 +31,32 @@ public class Scrapper {
 
         String origin = "BUE";
         //List<String> destinations = Arrays.asList("TYO", "HND", "NRT");
-        String destination = "TYO";
-        LocalDate dateFrom = LocalDate.of(2018, 9, 1);
-        LocalDate dateTo = LocalDate.of(2018, 11, 17);
-        Integer dayQuantityMin = 14;
-        Integer dayQuantityMax = 17;
+        String destination = "SIN";
+        LocalDate dateFrom = LocalDate.of(2018, 7, 25);
+        LocalDate dateTo = LocalDate.of(2018, 9, 5);
+        //LocalDate dateTo = LocalDate.of(2018, 10, 20);
+        Integer dayQuantityMin = 9;
+        Integer dayQuantityMax = 11;
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
         System.out.println("Query count: " + flightInfoList.size());
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(4);
-        List<ScrappedFlight> allResults = forkJoinPool.submit(() ->
-                flightInfoList.parallelStream().flatMap(i -> {
-                    try {
-                        System.out.println("Current query: " + i.printInfo());
-                        return scrap(i).stream();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                })
-        ).get()
-         .filter(Objects::nonNull)
-         .collect(Collectors.toList());
+        ForkJoinPool forkJoinPool = new ForkJoinPool(20);
+        forkJoinPool.submit(() ->
+            flightInfoList.parallelStream().forEach(i -> {
+                try {
+                    ResultHandler.addResult(scrap(i));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            })
+        ).get();
 
 
-        System.out.println("All queries finished, " + allResults.size() + " results.");
-        allResults.stream().map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo()).sorted().forEach(System.out::println);
+        System.out.println("All queries finished, " + ResultHandler.getResultCount() + " results.");
+        ResultHandler.printResults();
     }
-
 
 
     public static List<ScrappedFlight> scrap(FlightInfo flightInfo) throws IOException {
@@ -100,7 +96,7 @@ public class Scrapper {
             }
             catch (NullPointerException e){
                 System.out.println("NPE for " + flightInfo.printInfo() + ". Date is probably out of range.");
-                return null;
+                return new ArrayList<>();
             }
         }
         catch (SocketTimeoutException e){
