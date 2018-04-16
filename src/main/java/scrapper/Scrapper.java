@@ -30,23 +30,24 @@ public class Scrapper {
         configureClient();
 
         String origin = "BUE";
-        //List<String> destinations = Arrays.asList("TYO", "HND", "NRT");
-        String destination = "SIN";
-        LocalDate dateFrom = LocalDate.of(2018, 7, 25);
-        LocalDate dateTo = LocalDate.of(2018, 9, 5);
-        //LocalDate dateTo = LocalDate.of(2018, 10, 20);
-        Integer dayQuantityMin = 9;
-        Integer dayQuantityMax = 11;
+        String destination = "TYO";
+        LocalDate dateFrom = LocalDate.of(2018, 9, 20);
+        LocalDate dateTo = LocalDate.of(2018, 10, 10);
+        //LocalDate dateTo = LocalDate.of(2019, 2, 1);
+        Integer dayQuantityMin = 15;
+        Integer dayQuantityMax = 19;
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
+
+        ResultHandler resultHandler = new FileResultHandler("flightResults.txt",23000d);
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
         System.out.println("Query count: " + flightInfoList.size());
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(20);
+        ForkJoinPool forkJoinPool = new ForkJoinPool(200);
         forkJoinPool.submit(() ->
             flightInfoList.parallelStream().forEach(i -> {
                 try {
-                    ResultHandler.addResult(scrap(i));
+                    resultHandler.addResult(scrap(i));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -54,8 +55,8 @@ public class Scrapper {
         ).get();
 
 
-        System.out.println("All queries finished, " + ResultHandler.getResultCount() + " results.");
-        ResultHandler.printResults();
+        System.out.println("All queries finished, " + resultHandler.getResultCount() + " results.");
+        resultHandler.printResults();
     }
 
 
