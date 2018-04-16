@@ -11,6 +11,7 @@ import model.internal.ScrappedFlight;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
@@ -26,18 +27,19 @@ public class Scrapper {
         client.setReadTimeout(80, TimeUnit.SECONDS);    // socket timeout
     }
 
-    public static void main (String [] arguments) throws IOException, ExecutionException, InterruptedException {
+    public static void main (String [] arguments) throws ExecutionException, InterruptedException {
         configureClient();
 
         String origin = "BUE";
         String destination = "BKK";
         LocalDate dateFrom = LocalDate.of(2018, 9, 20);
-        LocalDate dateTo = LocalDate.of(2019, 2, 1);
+        LocalDate dateTo = LocalDate.of(2018, 10, 20);
+        //LocalDate dateTo = LocalDate.of(2019, 2, 1);
         Integer dayQuantityMin = 15;
-        Integer dayQuantityMax = 19;
+        Integer dayQuantityMax = 15;
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
 
-        ResultHandler resultHandler = new FileResultHandler("flightResults.txt",23000d);
+        ResultHandler resultHandler = new FileResultHandler("flightResults" + LocalDateTime.now().toString() + ".txt",23000d);
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
         System.out.println("Query count: " + flightInfoList.size());

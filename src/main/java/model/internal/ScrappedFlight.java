@@ -49,6 +49,10 @@ public class ScrappedFlight {
         return price;
     }
 
+    public Double getPriceString() {
+        return price;
+    }
+
     public String getAirline() {
         return airline;
     }
