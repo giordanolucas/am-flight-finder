@@ -83,8 +83,15 @@ public class Scrapper {
             return  getScrappedFlights(flightInfo, request);
         }
 
-        Gson gson = new Gson();
-        FlightResult flightResult = gson.fromJson(response.body().charStream(), FlightResult.class);
+        FlightResult flightResult = null;
+        try{
+            Gson gson = new Gson();
+            flightResult = gson.fromJson(response.body().charStream(), FlightResult.class);
+        }
+        catch (Exception e){
+            System.out.println("Error getting object from JSON: " + flightInfo.printInfo());
+            return new ArrayList<>();
+        }
 
         return flightResult.getResults().getClusters()
                 .stream().map(x -> new ScrappedFlight(flightInfo, x)).collect(Collectors.toList());
