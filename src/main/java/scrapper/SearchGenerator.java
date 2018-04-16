@@ -21,4 +21,14 @@ public class SearchGenerator {
 
         return flightInfoList;
     }
+
+    public static List<FlightInfo> generateSearchs(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, Integer dayQuantityMin, Integer dayQuantityMax){
+        List<FlightInfo> flightInfoList = new LinkedList<>();
+
+        for(int i = dayQuantityMin; i <= dayQuantityMax; i++){
+            flightInfoList.addAll(generateSearchs(origin, destination, dateFrom, dateTo, i));
+        }
+
+        return flightInfoList;
+    }
 }

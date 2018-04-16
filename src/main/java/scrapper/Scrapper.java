@@ -34,15 +34,16 @@ public class Scrapper {
         configureClient();
 
         String origin = "BUE";
-        String destination = "BKK";
+        String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 9, 1);
         LocalDate dateTo = LocalDate.of(2018, 10, 25);
-        Integer dayQuantity = 10;
+        Integer dayQuantityMin = 12;
+        Integer dayQuantityMax = 15;
 
-        List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantity);
+        List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax);
         System.out.println("Query count: " + flightInfoList.size());
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(1);
+        ForkJoinPool forkJoinPool = new ForkJoinPool(2);
         List<ScrappedFlight> allResults = forkJoinPool.submit(() ->
                 flightInfoList.parallelStream().flatMap(i -> {
                     try {
