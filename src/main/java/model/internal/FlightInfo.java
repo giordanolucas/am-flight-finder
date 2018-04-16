@@ -48,7 +48,7 @@ public class FlightInfo {
     }
 
     public String getDateToString() {
-        return getAmFormatedDate(dateFrom);
+        return getAmFormatedDate(dateTo);
     }
 
     public Long dayQuantity(){
