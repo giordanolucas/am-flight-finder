@@ -38,7 +38,7 @@ public class Scrapper {
         LocalDate dateFrom = LocalDate.of(2018, 9, 1);
         LocalDate dateTo = LocalDate.of(2018, 10, 25);
         Integer dayQuantityMin = 12;
-        Integer dayQuantityMax = 15;
+        Integer dayQuantityMax = 16;
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax);
         System.out.println("Query count: " + flightInfoList.size());
@@ -60,7 +60,7 @@ public class Scrapper {
 
 
         System.out.println("All queries finished, " + allResults.size() + " results.");
-        System.out.print(allResults.toString());
+        allResults.stream().map(x -> x.getPrice()).sorted().map(x -> { System.out.println(x); return x;}).collect(Collectors.toList())
     }
 
     public static List<ScrappedFlight> scrap(FlightInfo flightInfo) throws IOException {
