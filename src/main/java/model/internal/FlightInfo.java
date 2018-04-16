@@ -60,6 +60,6 @@ public class FlightInfo {
     }
 
     public String printInfo() {
-        return origin + " -> " + destination + ": " + dateFrom + " -> " + dateTo + " (" + dayQuantity() + " days)" + (provider != null ? " [" + provider + "]" : "");
+        return origin + " -> " + destination + ": " + getDateFromString() + " -> " + getDateToString() + " (" + dayQuantity() + " days)" + (provider != null ? " [" + provider + "]" : "");
     }
 }
