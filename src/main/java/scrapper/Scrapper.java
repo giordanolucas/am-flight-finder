@@ -27,7 +27,7 @@ public class Scrapper {
     private static void configureClient() {
         client = new OkHttpClient();
         client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
-        client.setReadTimeout(60, TimeUnit.SECONDS);    // socket timeout
+        client.setReadTimeout(80, TimeUnit.SECONDS);    // socket timeout
     }
 
     public static void main (String [] arguments) throws IOException, ExecutionException, InterruptedException {
@@ -36,14 +36,14 @@ public class Scrapper {
         String origin = "BUE";
         String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 9, 1);
-        LocalDate dateTo = LocalDate.of(2018, 10, 25);
+        LocalDate dateTo = LocalDate.of(2019, 3, 15);
         Integer dayQuantityMin = 12;
-        Integer dayQuantityMax = 16;
+        Integer dayQuantityMax = 18;
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax);
         System.out.println("Query count: " + flightInfoList.size());
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(2);
+        ForkJoinPool forkJoinPool = new ForkJoinPool(4);
         List<ScrappedFlight> allResults = forkJoinPool.submit(() ->
                 flightInfoList.parallelStream().flatMap(i -> {
                     try {
@@ -75,15 +75,20 @@ public class Scrapper {
     }
 
     private static List<ScrappedFlight> getScrappedFlights(FlightInfo flightInfo, Request request) throws IOException {
-        Response response;
+        Response response = null;
         try{
             response = client.newCall(request).execute();
         }
         catch (SocketTimeoutException e){
             return  getScrappedFlights(flightInfo, request);
         }
+        finally {
+            if(response != null && response.body() != null){
+                response.body().close();
+            }
+        }
 
-        FlightResult flightResult = null;
+        FlightResult flightResult;
         try{
             Gson gson = new Gson();
             flightResult = gson.fromJson(response.body().charStream(), FlightResult.class);
