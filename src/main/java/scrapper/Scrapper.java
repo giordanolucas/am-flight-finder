@@ -8,7 +8,9 @@ import model.am.FlightResult;
 import model.internal.FlightInfo;
 import model.internal.ScrappedFlight;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,10 +30,11 @@ public class Scrapper {
     }
 
     public static void main (String [] arguments) throws ExecutionException, InterruptedException {
+        ProgramProperties.initialize();
         configureClient();
 
         String origin = "BUE";
-        String destination = "TYO";
+        String destination = "BKK";
         LocalDate dateFrom = LocalDate.of(2018, 10, 1);
         //LocalDate dateTo = LocalDate.of(2018, 10, 30);
         LocalDate dateTo = LocalDate.of(2019, 3, 1);
@@ -40,6 +43,7 @@ public class Scrapper {
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
 
         ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",23000d);
+        MailResultHandler mailResultHandler = new MailResultHandler(23000d);
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
         System.out.println("Query count: " + flightInfoList.size());
@@ -48,7 +52,9 @@ public class Scrapper {
         forkJoinPool.submit(() ->
             flightInfoList.parallelStream().forEach(i -> {
                 try {
-                    resultHandler.addResult(scrap(i));
+                    List<ScrappedFlight> scrappedFlights = scrap(i);
+                    mailResultHandler.addResult(scrappedFlights);
+                    resultHandler.addResult(scrappedFlights);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
