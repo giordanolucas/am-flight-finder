@@ -17,12 +17,16 @@ public class ResultHandler {
     }
 
     public void addResult(List<ScrappedFlight> result){
-        for(ScrappedFlight flight : result){
-            allResults.add(flight);
-            System.out.println("New result (" + allResults.size() + "): " + getFlightDataString(flight));
+        if(result.size() > 0){
+            allResults.addAll(result);
 
-            if(flight.getPrice() < alertPrice){
-                System.err.println("ALERT!!!! " + getFlightDataString(flight));
+            ScrappedFlight firstFlight = result.get(0);
+
+            if(firstFlight.getPrice() < alertPrice){
+                System.err.println("Flight #" + allResults.size() + ": " + getFlightDataString(firstFlight) + " <-- ALERT!!!");
+            }
+            else{
+                System.out.println("Flight #" + allResults.size() + ": " + getFlightDataString(firstFlight));
             }
         }
     }
