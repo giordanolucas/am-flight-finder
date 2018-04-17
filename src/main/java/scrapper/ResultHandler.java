@@ -17,9 +17,8 @@ public class ResultHandler {
     }
 
     public void addResult(List<ScrappedFlight> result){
-        allResults.addAll(result);
-
         for(ScrappedFlight flight : result){
+            allResults.add(flight);
             System.out.println("New result (" + allResults.size() + "): " + getFlightDataString(flight));
 
             if(flight.getPrice() < alertPrice){
