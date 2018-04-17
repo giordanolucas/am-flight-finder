@@ -1,5 +1,4 @@
 flightResult*
-src/main/resources/config.properties
 
 ### Java template
 *.class

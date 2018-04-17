@@ -34,7 +34,7 @@ public class Scrapper {
         configureClient();
 
         String origin = "BUE";
-        String destination = "BKK";
+        String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 10, 1);
         //LocalDate dateTo = LocalDate.of(2018, 10, 30);
         LocalDate dateTo = LocalDate.of(2019, 3, 1);
