@@ -34,6 +34,8 @@ public class MailService {
 
             Transport.send(message);
 
+            System.out.println("Mail sent! (" + subject + ")");
+
             return true;
 
         }

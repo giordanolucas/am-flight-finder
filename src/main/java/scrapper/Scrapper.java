@@ -37,7 +37,7 @@ public class Scrapper {
         String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 10, 1);
         //LocalDate dateTo = LocalDate.of(2018, 10, 30);
-        LocalDate dateTo = LocalDate.of(2019, 3, 1);
+        LocalDate dateTo = LocalDate.of(2019, 3, 20);
         Integer dayQuantityMin = 15;
         Integer dayQuantityMax = 19;
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
