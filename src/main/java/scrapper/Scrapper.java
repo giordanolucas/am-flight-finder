@@ -31,14 +31,15 @@ public class Scrapper {
         configureClient();
 
         String origin = "BUE";
-        String destination = "BKK";
+        String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 10, 1);
-        LocalDate dateTo = LocalDate.of(2019, 3, 1);
-        Integer dayQuantityMin = 14;
+        LocalDate dateTo = LocalDate.of(2018, 10, 30);
+        //LocalDate dateTo = LocalDate.of(2019, 3, 1);
+        Integer dayQuantityMin = 20;
         Integer dayQuantityMax = 20;
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
 
-        ResultHandler resultHandler = new FileResultHandler("flightResults" + LocalDateTime.now().toString() + ".txt",23000d);
+        ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",23000d);
 
         List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
         System.out.println("Query count: " + flightInfoList.size());
@@ -62,7 +63,7 @@ public class Scrapper {
 
     public static List<ScrappedFlight> scrap(FlightInfo flightInfo) throws IOException {
         Request.Builder builder = new Request.Builder()
-                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightInfo.getDateFrom() + "," + flightInfo.getDateTo() + "&from=" + flightInfo.getOrigin() + "," + flightInfo.getDestination() + "&sortBy=PRICE&to=" + flightInfo.getDestination() + "," + flightInfo.getOrigin())
+                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightInfo.getDateFrom() + "," + flightInfo.getDateTo() + "&from=" + flightInfo.getOrigin() + "," + flightInfo.getDestination() + "&limit=15&offset=0&sortBy=PRICE&to=" + flightInfo.getDestination() + "," + flightInfo.getOrigin())
                 .get()
                 .addHeader("cache-control", "no-cache")
                 .addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");
@@ -109,4 +110,5 @@ public class Scrapper {
             }
         }
     }
+
 }

@@ -20,10 +20,10 @@ public class ResultHandler {
         allResults.addAll(result);
 
         for(ScrappedFlight flight : result){
-            System.out.println("New result: " + flight.getPrice() + " :: " + flight.getFlightInfo().printInfo());
+            System.out.println("New result: " + getFlightDataString(flight));
 
             if(flight.getPrice() < alertPrice){
-                System.err.println("ALERT!!!! " + flight.getPrice() + " :: " + flight.getFlightInfo().printInfo());
+                System.err.println("ALERT!!!! " + getFlightDataString(flight));
             }
         }
     }
@@ -32,11 +32,15 @@ public class ResultHandler {
         allResults.stream()
                 .filter(Objects::nonNull)
                 .sorted((x, y) -> (x.getPrice().equals(y.getPrice())) ? 0 : (x.getPrice() > y.getPrice() ? 1 : -1))
-                .map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo())
+                .map(ResultHandler::getFlightDataString)
                 .forEach(System.out::println);
     }
 
     public Integer getResultCount(){
         return allResults.size();
+    }
+
+    protected static String getFlightDataString(ScrappedFlight flight){
+        return flight.getPriceString() + " :: " + flight.getFlightInfo().printInfo() + " :: " + flight.getAirline();
     }
 }

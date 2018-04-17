@@ -1,5 +1,7 @@
 package scrapper;
 
+import model.internal.ScrappedFlight;
+
 import java.io.*;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ public class FileResultHandler extends ResultHandler {
             allResults.stream()
                 .filter(Objects::nonNull)
                 .sorted((x, y) -> (x.getPrice().equals(y.getPrice())) ? 0 : (x.getPrice() > y.getPrice() ? 1 : -1))
-                .map(x -> x.getPrice() + " :: " + x.getFlightInfo().printInfo())
+                .map(FileResultHandler::getFlightDataString)
                 .forEach(x -> {
                     try {
                         writer.write(x);
@@ -38,6 +40,5 @@ public class FileResultHandler extends ResultHandler {
         }
 
         super.printResults();
-
     }
 }

@@ -3,6 +3,7 @@ package model.internal;
 import model.am.Choice;
 import model.am.Cluster;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,8 +50,9 @@ public class ScrappedFlight {
         return price;
     }
 
-    public Double getPriceString() {
-        return price;
+    public String getPriceString() {
+        DecimalFormat twoPlaces = new DecimalFormat("0.00");
+        return twoPlaces.format(price);
     }
 
     public String getAirline() {
