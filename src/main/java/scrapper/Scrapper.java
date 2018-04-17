@@ -33,10 +33,10 @@ public class Scrapper {
         String origin = "BUE";
         String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 10, 1);
-        LocalDate dateTo = LocalDate.of(2018, 10, 30);
-        //LocalDate dateTo = LocalDate.of(2019, 3, 1);
-        Integer dayQuantityMin = 20;
-        Integer dayQuantityMax = 20;
+        //LocalDate dateTo = LocalDate.of(2018, 10, 30);
+        LocalDate dateTo = LocalDate.of(2019, 3, 1);
+        Integer dayQuantityMin = 15;
+        Integer dayQuantityMax = 19;
         List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
 
         ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",23000d);

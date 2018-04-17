@@ -20,7 +20,7 @@ public class ResultHandler {
         allResults.addAll(result);
 
         for(ScrappedFlight flight : result){
-            System.out.println("New result: " + getFlightDataString(flight));
+            System.out.println("New result (" + allResults.size() + "): " + getFlightDataString(flight));
 
             if(flight.getPrice() < alertPrice){
                 System.err.println("ALERT!!!! " + getFlightDataString(flight));
