@@ -11,7 +11,7 @@ public class ProgramProperties {
         InputStream input = null;
 
         try {
-            input = Scrapper.class.getClassLoader().getResourceAsStream("config.properties");
+            input = Scrapper.class.getClassLoader().getResourceAsStream("config-local.properties");
             properties.load(input);
 
         } catch (IOException ex) {

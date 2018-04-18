@@ -2,9 +2,12 @@ package scrapper;
 
 import model.internal.ScrappedFlight;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class MailResultHandler extends ResultHandler {
+
+    List<ScrappedFlight> notificationFlights = new LinkedList<>();
 
     public MailResultHandler(Double alertPrice) {
         super(alertPrice);
@@ -16,13 +19,19 @@ public class MailResultHandler extends ResultHandler {
 
         for(ScrappedFlight flight : result){
             if(flight.getPrice() <= alertPrice){
-                MailService.sendMail(flight.getFlightInfo().printInfo(), getFlightDataString(flight));
+                notificationFlights.add(flight);
             }
         }
     }
 
     @Override
     public void printResults() {
-        super.printResults();
+        StringBuilder mailMessage = new StringBuilder();
+
+        for(ScrappedFlight flight : notificationFlights){
+            mailMessage.append(getFlightDataString(flight)).append(System.lineSeparator());
+        }
+
+        MailService.sendMail("Flight notifications!", mailMessage.toString());
     }
 }
