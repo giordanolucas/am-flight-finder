@@ -10,6 +10,9 @@ import model.internal.GDS;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,22 +24,22 @@ import java.util.stream.Collectors;
 public class Scrapper {
     private static OkHttpClient client;
 
-    private static void configureClient() {
+    private static void configureHttpClient() {
         client = new OkHttpClient();
         client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(80, TimeUnit.SECONDS);    // socket timeout
     }
 
     public static void main (String [] arguments) throws ExecutionException, InterruptedException {
-        ProgramProperties.initialize();
-        configureClient();
+        configureHttpClient();
+        Connection conn = DatabaseService.getConnection();
 
         String origin = "BUE";
         String destination = "TYO";
-        LocalDate dateFrom = LocalDate.of(2018, 10, 1);
+        LocalDate dateFrom = LocalDate.of(2018, 10, 5);
         LocalDate dateTo = LocalDate.of(2018, 11, 1);
         Integer dayQuantityMin = 15;
-        Integer dayQuantityMax = 18;
+        Integer dayQuantityMax = 15;
         List<GDS> gds = Arrays.asList(GDS.amadeus(), GDS.sabre(), GDS.worldspan());
 
         ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",22000d);
