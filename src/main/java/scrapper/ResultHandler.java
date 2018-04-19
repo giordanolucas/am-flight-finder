@@ -1,13 +1,13 @@
 package scrapper;
 
-import model.internal.ScrappedFlight;
+import model.internal.FlightResult;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ResultHandler {
-    protected List<ScrappedFlight> allResults = new ArrayList<>();
+    protected List<FlightResult> allResults = new ArrayList<>();
     protected double alertPrice = 0;
 
     public ResultHandler(){}
@@ -16,11 +16,11 @@ public class ResultHandler {
         this.alertPrice = alertPrice;
     }
 
-    public void addResult(List<ScrappedFlight> result){
+    public void addResult(List<FlightResult> result){
         if(result.size() > 0){
             allResults.addAll(result);
 
-            ScrappedFlight firstFlight = result.get(0);
+            FlightResult firstFlight = result.get(0);
 
             if(firstFlight.getPrice() < alertPrice){
                 System.err.println("Flight #" + allResults.size() + ": " + getFlightDataString(firstFlight) + " <-- ALERT!!!");
@@ -43,7 +43,7 @@ public class ResultHandler {
         return allResults.size();
     }
 
-    protected static String getFlightDataString(ScrappedFlight flight){
-        return flight.getPriceString() + " :: " + flight.getFlightInfo().printInfo() + " :: " + flight.getAirline();
+    protected static String getFlightDataString(FlightResult flight){
+        return flight.getPriceString() + " :: " + flight.getFlightQuery().printInfo() + " :: " + flight.getAirline();
     }
 }

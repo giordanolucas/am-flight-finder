@@ -1,7 +1,5 @@
 package scrapper;
 
-import model.internal.ScrappedFlight;
-
 import java.io.*;
 import java.util.Objects;
 

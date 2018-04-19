@@ -1,39 +1,58 @@
 package model.internal;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class FlightTimes {
-    private String departureDate;
-    private String departureTime;
-    private String arrivalDate;
-    private String arrivalTime;
+    private Integer idFlightTimes;
+    private LocalDateTime departure;
+    private LocalDateTime arrival;
     private String duration;
 
-    public FlightTimes(String departureDate, String departureTime, String arrivalDate, String arrivalTime, String duration){
-        this.departureDate = departureDate;
-        this.departureTime = departureTime;
-        this.arrivalDate = arrivalDate;
-        this.arrivalTime = arrivalTime;
+    public FlightTimes(String departureDateString, String departureTimeString, String arrivalDateString, String arrivalTimeString, String duration){
+
+        LocalDate departureDate = LocalDate.parse(departureDateString, DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate arrivalDate = LocalDate.parse(arrivalDateString, DateTimeFormatter.ISO_LOCAL_DATE);
+
+        LocalTime departureTime = LocalTime.parse(departureTimeString);
+        LocalTime arrivalTime = LocalTime.parse(arrivalTimeString);
+
+        this.departure = departureDate.atTime(departureTime);
+        this.arrival = arrivalDate.atTime(arrivalTime);
+
         this.duration = duration;
     }
 
-    public String getDepartureDate() {
-        return departureDate;
+    public FlightTimes(Integer idFlightTimes, LocalDateTime departure, LocalDateTime arrival, String duration){
+        this.idFlightTimes = idFlightTimes;
+        this.departure = departure;
+        this.arrival = arrival;
+        this.duration = duration;
     }
 
-    public String getDepartureTime() {
-        return departureTime;
+    public String getDepartureDateTimeString() {
+        return departure.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
-
-    public String getArrivalDate() {
-        return arrivalDate;
+    public String getArrivalDateTimeString() {
+        return arrival.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
+    public LocalDateTime getArrival() {
+        return arrival;
+    }
 
-    public String getArrivalTime() {
-        return arrivalTime;
+    public LocalDateTime getDeparture() {
+        return departure;
     }
 
     public String getDuration() {
         return duration;
+    }
+
+    public Integer getIdFlightTimes() {
+        return idFlightTimes;
     }
 }

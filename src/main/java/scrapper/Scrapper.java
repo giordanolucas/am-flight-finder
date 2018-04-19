@@ -4,13 +4,11 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import model.am.FlightResult;
-import model.internal.FlightInfo;
-import model.internal.ScrappedFlight;
+import model.internal.FlightQuery;
+import model.internal.FlightResult;
+import model.internal.GDS;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,24 +34,24 @@ public class Scrapper {
         String origin = "BUE";
         String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 10, 1);
-        LocalDate dateTo = LocalDate.of(2019, 4, 1);
+        LocalDate dateTo = LocalDate.of(2018, 11, 1);
         Integer dayQuantityMin = 15;
-        Integer dayQuantityMax = 19;
-        List<String> providers = Arrays.asList("AMA", "WOR", "SAB");
+        Integer dayQuantityMax = 18;
+        List<GDS> gds = Arrays.asList(GDS.amadeus(), GDS.sabre(), GDS.worldspan());
 
         ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",22000d);
         MailResultHandler mailResultHandler = new MailResultHandler(24000d);
 
-        List<FlightInfo> flightInfoList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, providers);
-        System.out.println("Query count: " + flightInfoList.size());
+        List<FlightQuery> flightQueryList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, gds);
+        System.out.println("Query count: " + flightQueryList.size());
 
         ForkJoinPool forkJoinPool = new ForkJoinPool(200);
         forkJoinPool.submit(() ->
-            flightInfoList.parallelStream().forEach(i -> {
+            flightQueryList.parallelStream().forEach(i -> {
                 try {
-                    List<ScrappedFlight> scrappedFlights = scrap(i);
-                    mailResultHandler.addResult(scrappedFlights);
-                    resultHandler.addResult(scrappedFlights);
+                    List<FlightResult> flightResults = scrap(i);
+                    mailResultHandler.addResult(flightResults);
+                    resultHandler.addResult(flightResults);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -63,51 +61,52 @@ public class Scrapper {
 
         System.out.println("All queries finished, " + resultHandler.getResultCount() + " results.");
         resultHandler.printResults();
+        mailResultHandler.printResults();
     }
 
 
-    public static List<ScrappedFlight> scrap(FlightInfo flightInfo) throws IOException {
+    public static List<FlightResult> scrap(FlightQuery flightQuery) throws IOException {
         Request.Builder builder = new Request.Builder()
-                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightInfo.getDateFrom() + "," + flightInfo.getDateTo() + "&from=" + flightInfo.getOrigin() + "," + flightInfo.getDestination() + "&limit=15&offset=0&sortBy=PRICE&to=" + flightInfo.getDestination() + "," + flightInfo.getOrigin())
+                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightQuery.getDateFrom() + "," + flightQuery.getDateTo() + "&from=" + flightQuery.getOrigin() + "," + flightQuery.getDestination() + "&limit=15&offset=0&sortBy=PRICE&to=" + flightQuery.getDestination() + "," + flightQuery.getOrigin())
                 .get()
                 .addHeader("cache-control", "no-cache")
                 .addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");
 
-        if(flightInfo.getProvider() != null && !flightInfo.getProvider().trim().equalsIgnoreCase("")){
-            builder.addHeader("X-AM-PROVIDER", flightInfo.getProvider());
+        if(flightQuery.getGDS() != null && !flightQuery.getGDS().getCode().trim().equalsIgnoreCase("")){
+            builder.addHeader("X-AM-PROVIDER", flightQuery.getGDS().getCode());
         }
 
         Request request = builder.build();
 
-        return getScrappedFlights(flightInfo, request);
+        return getScrappedFlights(flightQuery, request);
     }
 
-    private static List<ScrappedFlight> getScrappedFlights(FlightInfo flightInfo, Request request) throws IOException {
+    private static List<FlightResult> getScrappedFlights(FlightQuery flightQuery, Request request) throws IOException {
         Response response = null;
         try{
             response = client.newCall(request).execute();
 
-            FlightResult flightResult;
+            model.am.FlightResult flightResult;
             try{
                 Gson gson = new Gson();
-                flightResult = gson.fromJson(response.body().charStream(), FlightResult.class);
+                flightResult = gson.fromJson(response.body().charStream(), model.am.FlightResult.class);
             }
             catch (Exception e){
-                System.out.println("Error getting object from JSON: " + flightInfo.printInfo());
+                System.out.println("Error getting object from JSON: " + flightQuery.printInfo());
                 return new ArrayList<>();
             }
 
             try{
                 return flightResult.getResults().getClusters()
-                        .stream().map(x -> new ScrappedFlight(flightInfo, x)).collect(Collectors.toList());
+                        .stream().map(x -> new FlightResult(flightQuery, x)).collect(Collectors.toList());
             }
             catch (NullPointerException e){
-                System.out.println("NPE for " + flightInfo.printInfo() + ". Date is probably out of range.");
+                System.out.println("NPE for " + flightQuery.printInfo() + ". Date is probably out of range.");
                 return new ArrayList<>();
             }
         }
         catch (SocketTimeoutException e){
-            return  getScrappedFlights(flightInfo, request);
+            return  getScrappedFlights(flightQuery, request);
         }
         finally {
             if(response != null && response.body() != null){

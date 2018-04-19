@@ -1,30 +1,36 @@
 package model.internal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static util.DateUtils.getAmFormatedDate;
 
-public class FlightInfo {
-    private String provider;
+public class FlightQuery {
+    private Integer idFlightQuery;
+    private GDS gds;
     private String origin;
     private String destination;
     private LocalDate dateFrom;
     private LocalDate dateTo;
+    private LocalDateTime queryDate;
 
-    public FlightInfo(String origin, String destination, LocalDate dateFrom, LocalDate dateTo){
+    public FlightQuery(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, GDS gds){
         this.origin = origin;
         this.destination = destination;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.gds = gds;
     }
 
-    public FlightInfo(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, String provider){
+    public FlightQuery(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, GDS gds, Integer idFlightQuery, LocalDateTime queryDate){
         this.origin = origin;
         this.destination = destination;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-        this.provider = provider;
+        this.gds = gds;
+        this.idFlightQuery = idFlightQuery;
+        this.queryDate = queryDate;
     }
 
     public String getOrigin() {
@@ -55,11 +61,19 @@ public class FlightInfo {
         return ChronoUnit.DAYS.between(dateFrom, dateTo);
     }
 
-    public String getProvider() {
-        return provider;
+    public GDS getGDS() {
+        return gds;
+    }
+
+    public Integer getIdFlightQuery() {
+        return idFlightQuery;
+    }
+
+    public LocalDateTime getQueryDate() {
+        return queryDate;
     }
 
     public String printInfo() {
-        return origin + " -> " + destination + ": " + getDateFromString() + " -> " + getDateToString() + " (" + dayQuantity() + " days)" + (provider != null ? " [" + provider + "]" : "");
+        return origin + " -> " + destination + ": " + getDateFromString() + " -> " + getDateToString() + " (" + dayQuantity() + " days) [" + gds.getName() + "]";
     }
 }

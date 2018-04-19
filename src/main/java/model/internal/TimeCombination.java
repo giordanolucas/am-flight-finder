@@ -1,19 +1,15 @@
 package model.internal;
 
+import java.util.List;
+
 public class TimeCombination {
-    private FlightTimes firstFlight;
-    private FlightTimes secondFlight;
+    private List<FlightTimes> flightTimes;
 
-    public TimeCombination(FlightTimes firstFlight, FlightTimes secondFlight){
-        this.firstFlight = firstFlight;
-        this.secondFlight = secondFlight;
+    public TimeCombination(List<FlightTimes> flightTimes){
+        this.flightTimes = flightTimes;
     }
 
-    public FlightTimes getFirstFlight() {
-        return firstFlight;
-    }
-
-    public FlightTimes getSecondFlight() {
-        return secondFlight;
+    public List<FlightTimes> getFlightTimes() {
+        return flightTimes;
     }
 }
