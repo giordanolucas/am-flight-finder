@@ -24,15 +24,13 @@ public class DatabaseResultHandler extends ResultHandler{
     public void addResult(List<FlightResult> result) {
         super.addResult(result);
 
-        for(FlightResult flightResult : result){
-            try{
-                FlightResultDal.saveFlightResult(flightResult);
-            }
-            catch (Exception e){
-                System.err.println("Error saving flight result to database");
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            }
+        try{
+            FlightResultDal.saveFlightResultBatch(result);
+        }
+        catch (Exception e){
+            System.err.println("Error saving flight result to database");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

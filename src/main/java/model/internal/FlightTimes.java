@@ -6,8 +6,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class FlightTimes {
-    private Integer idTimeCombination;
-    private Integer idFlightTimes;
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private String duration;
@@ -27,7 +25,6 @@ public class FlightTimes {
     }
 
     public FlightTimes(Integer idFlightTimes, LocalDateTime departure, LocalDateTime arrival, String duration){
-        this.idFlightTimes = idFlightTimes;
         this.departure = departure;
         this.arrival = arrival;
         this.duration = duration;
@@ -57,21 +54,5 @@ public class FlightTimes {
         String[] split = duration.split(":");
 
         return Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
-    }
-
-    public Integer getIdFlightTimes() {
-        return idFlightTimes;
-    }
-
-    public Integer getIdTimeCombination() {
-        return idTimeCombination;
-    }
-
-    public void setIdTimeCombination(Integer idTimeCombination) {
-        this.idTimeCombination = idTimeCombination;
-    }
-
-    public void setIdFlightTimes(Integer idFlightTimes) {
-        this.idFlightTimes = idFlightTimes;
     }
 }

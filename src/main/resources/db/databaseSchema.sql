@@ -31,7 +31,7 @@ CREATE TABLE `flightQuery` (
   `dateTo` datetime NOT NULL,
   `gds` varchar(45) NOT NULL,
   PRIMARY KEY (`idFlightQuery`)
-) ENGINE=InnoDB AUTO_INCREMENT=434 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,49 +43,15 @@ DROP TABLE IF EXISTS `flightResult`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `flightResult` (
   `idFlightResult` int(11) NOT NULL AUTO_INCREMENT,
+  `idFlightQuery` int(11) NOT NULL,
   `price` double NOT NULL,
   `airline` varchar(255) NOT NULL,
   `resultDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `idFlightQuery` int(11) NOT NULL,
+  `timeCombinationsJson` mediumtext NOT NULL,
   PRIMARY KEY (`idFlightResult`),
   KEY `flightResult_flightQuery_idx` (`idFlightQuery`),
   CONSTRAINT `flightResult_flightQuery` FOREIGN KEY (`idFlightQuery`) REFERENCES `flightQuery` (`idFlightQuery`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=888 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `flightTime`
---
-
-DROP TABLE IF EXISTS `flightTime`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `flightTime` (
-  `idFlightTime` int(11) NOT NULL AUTO_INCREMENT,
-  `idTimeCombination` int(11) NOT NULL,
-  `departure` datetime NOT NULL,
-  `arrival` datetime NOT NULL,
-  `duration` int(11) NOT NULL,
-  PRIMARY KEY (`idFlightTime`),
-  KEY `flightTime_timeCombination_idx` (`idTimeCombination`),
-  CONSTRAINT `flightTime_timeCombination` FOREIGN KEY (`idTimeCombination`) REFERENCES `timeCombination` (`idTimeCombination`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3706 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `timeCombination`
---
-
-DROP TABLE IF EXISTS `timeCombination`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `timeCombination` (
-  `idTimeCombination` int(11) NOT NULL AUTO_INCREMENT,
-  `idFlightResult` int(11) NOT NULL,
-  PRIMARY KEY (`idTimeCombination`),
-  KEY `timeCombination_flightResult_idx` (`idFlightResult`),
-  CONSTRAINT `timeCombination_flightResult` FOREIGN KEY (`idFlightResult`) REFERENCES `flightResult` (`idFlightResult`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2397 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -97,4 +63,4 @@ CREATE TABLE `timeCombination` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-21 21:24:43
+-- Dump completed on 2018-04-22 12:04:47
