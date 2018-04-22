@@ -69,6 +69,10 @@ public class FlightQuery {
         return idFlightQuery;
     }
 
+    public void setIdFlightQuery(Integer id) {
+        this.idFlightQuery = id;
+    }
+
     public LocalDateTime getQueryDate() {
         return queryDate;
     }

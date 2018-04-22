@@ -28,9 +28,9 @@ public class MailResultHandler extends ResultHandler {
     public void printResults() {
         StringBuilder mailMessage = new StringBuilder();
 
-        for(FlightResult flight : notificationFlights){
-            mailMessage.append(getFlightDataString(flight)).append(System.lineSeparator());
-        }
+        notificationFlights.stream()
+                .sorted((x, y) -> (x.getPrice().equals(y.getPrice())) ? 0 : (x.getPrice() > y.getPrice() ? 1 : -1))
+                .forEach(x -> mailMessage.append(getFlightDataString(x)).append(System.lineSeparator()));
 
         MailService.sendMail("Flight notifications!", mailMessage.toString());
     }

@@ -32,18 +32,18 @@ public class Scrapper {
 
     public static void main (String [] arguments) throws ExecutionException, InterruptedException {
         configureHttpClient();
-        Connection conn = DatabaseService.getConnection();
 
         String origin = "BUE";
         String destination = "TYO";
         LocalDate dateFrom = LocalDate.of(2018, 10, 5);
-        LocalDate dateTo = LocalDate.of(2018, 11, 1);
-        Integer dayQuantityMin = 15;
-        Integer dayQuantityMax = 15;
+        LocalDate dateTo = LocalDate.of(2019, 4, 1);
+        Integer dayQuantityMin = 16;
+        Integer dayQuantityMax = 19;
         List<GDS> gds = Arrays.asList(GDS.amadeus(), GDS.sabre(), GDS.worldspan());
 
-        ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",22000d);
-        MailResultHandler mailResultHandler = new MailResultHandler(24000d);
+        //ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",22000d);
+        //MailResultHandler mailResultHandler = new MailResultHandler(23500d);
+        DatabaseResultHandler databaseResultHandler = new DatabaseResultHandler();
 
         List<FlightQuery> flightQueryList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, gds);
         System.out.println("Query count: " + flightQueryList.size());
@@ -53,8 +53,10 @@ public class Scrapper {
             flightQueryList.parallelStream().forEach(i -> {
                 try {
                     List<FlightResult> flightResults = scrap(i);
-                    mailResultHandler.addResult(flightResults);
-                    resultHandler.addResult(flightResults);
+                    //mailResultHandler.addResult(flightResults);
+                    //resultHandler.addResult(flightResults);
+                    databaseResultHandler.saveQuery(i);
+                    databaseResultHandler.addResult(flightResults);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -62,15 +64,15 @@ public class Scrapper {
         ).get();
 
 
-        System.out.println("All queries finished, " + resultHandler.getResultCount() + " results.");
-        resultHandler.printResults();
-        mailResultHandler.printResults();
+        System.out.println("All queries finished, " + databaseResultHandler.getResultCount() + " results.");
+        //resultHandler.printResults();
+        //mailResultHandler.printResults();
     }
 
 
     public static List<FlightResult> scrap(FlightQuery flightQuery) throws IOException {
         Request.Builder builder = new Request.Builder()
-                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightQuery.getDateFrom() + "," + flightQuery.getDateTo() + "&from=" + flightQuery.getOrigin() + "," + flightQuery.getDestination() + "&limit=15&offset=0&sortBy=PRICE&to=" + flightQuery.getDestination() + "," + flightQuery.getOrigin())
+                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightQuery.getDateFrom() + "," + flightQuery.getDateTo() + "&from=" + flightQuery.getOrigin() + "," + flightQuery.getDestination() + "&limit=3&offset=0&sortBy=PRICE&to=" + flightQuery.getDestination() + "," + flightQuery.getOrigin())
                 .get()
                 .addHeader("cache-control", "no-cache")
                 .addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");

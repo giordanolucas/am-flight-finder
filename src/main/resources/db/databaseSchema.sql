@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `flightQuery`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `flightQuery` (
-  `idFlightQuery` int(11) NOT NULL,
+  `idFlightQuery` int(11) NOT NULL AUTO_INCREMENT,
   `queryDate` datetime NOT NULL,
   `origin` varchar(10) NOT NULL,
   `destination` varchar(10) NOT NULL,
@@ -58,7 +58,7 @@ DROP TABLE IF EXISTS `flightResult`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `flightResult` (
-  `idFlightResult` int(11) NOT NULL,
+  `idFlightResult` int(11) NOT NULL AUTO_INCREMENT,
   `price` double NOT NULL,
   `airline` varchar(255) NOT NULL,
   `resultDate` datetime NOT NULL,
@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `flightTime`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `flightTime` (
-  `idFlightTime` int(11) NOT NULL,
+  `idFlightTime` int(11) NOT NULL AUTO_INCREMENT,
   `idTimeCombination` int(11) NOT NULL,
   `departure` datetime NOT NULL,
   `arrival` datetime NOT NULL,
@@ -96,7 +96,7 @@ DROP TABLE IF EXISTS `gds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `gds` (
-  `idGds` int(11) NOT NULL,
+  `idGds` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `code` varchar(45) NOT NULL,
   PRIMARY KEY (`idGds`)
@@ -111,7 +111,7 @@ DROP TABLE IF EXISTS `timeCombination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `timeCombination` (
-  `idTimeCombination` int(11) NOT NULL,
+  `idTimeCombination` int(11) NOT NULL AUTO_INCREMENT,
   `idFlightResult` int(11) NOT NULL,
   PRIMARY KEY (`idTimeCombination`),
   KEY `timeCombination_flightResult_idx` (`idFlightResult`),
