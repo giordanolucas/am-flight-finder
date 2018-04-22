@@ -24,30 +24,14 @@ DROP TABLE IF EXISTS `flightQuery`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `flightQuery` (
   `idFlightQuery` int(11) NOT NULL AUTO_INCREMENT,
-  `queryDate` datetime NOT NULL,
+  `queryDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `origin` varchar(10) NOT NULL,
   `destination` varchar(10) NOT NULL,
   `dateFrom` datetime NOT NULL,
   `dateTo` datetime NOT NULL,
+  `gds` varchar(45) NOT NULL,
   PRIMARY KEY (`idFlightQuery`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `flightQuery_gds`
---
-
-DROP TABLE IF EXISTS `flightQuery_gds`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `flightQuery_gds` (
-  `idFlightQuery` int(11) NOT NULL,
-  `idGds` int(11) NOT NULL,
-  PRIMARY KEY (`idFlightQuery`,`idGds`),
-  KEY `flightQuery_gds_gds_idx` (`idGds`),
-  CONSTRAINT `flightQuery_gds_flightQuery` FOREIGN KEY (`idFlightQuery`) REFERENCES `flightQuery` (`idFlightQuery`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `flightQuery_gds_gds` FOREIGN KEY (`idGds`) REFERENCES `gds` (`idGds`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=434 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,12 +45,12 @@ CREATE TABLE `flightResult` (
   `idFlightResult` int(11) NOT NULL AUTO_INCREMENT,
   `price` double NOT NULL,
   `airline` varchar(255) NOT NULL,
-  `resultDate` datetime NOT NULL,
+  `resultDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idFlightQuery` int(11) NOT NULL,
   PRIMARY KEY (`idFlightResult`),
   KEY `flightResult_flightQuery_idx` (`idFlightQuery`),
   CONSTRAINT `flightResult_flightQuery` FOREIGN KEY (`idFlightQuery`) REFERENCES `flightQuery` (`idFlightQuery`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=888 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,22 +69,7 @@ CREATE TABLE `flightTime` (
   PRIMARY KEY (`idFlightTime`),
   KEY `flightTime_timeCombination_idx` (`idTimeCombination`),
   CONSTRAINT `flightTime_timeCombination` FOREIGN KEY (`idTimeCombination`) REFERENCES `timeCombination` (`idTimeCombination`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `gds`
---
-
-DROP TABLE IF EXISTS `gds`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `gds` (
-  `idGds` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `code` varchar(45) NOT NULL,
-  PRIMARY KEY (`idGds`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3706 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +85,7 @@ CREATE TABLE `timeCombination` (
   PRIMARY KEY (`idTimeCombination`),
   KEY `timeCombination_flightResult_idx` (`idFlightResult`),
   CONSTRAINT `timeCombination_flightResult` FOREIGN KEY (`idFlightResult`) REFERENCES `flightResult` (`idFlightResult`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2397 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -128,4 +97,4 @@ CREATE TABLE `timeCombination` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-18 23:01:18
+-- Dump completed on 2018-04-21 21:24:43
