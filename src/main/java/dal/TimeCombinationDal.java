@@ -1,6 +1,5 @@
 package dal;
 
-import model.internal.FlightResult;
 import model.internal.FlightTimes;
 import model.internal.TimeCombination;
 
