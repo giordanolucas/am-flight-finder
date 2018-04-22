@@ -6,7 +6,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import model.internal.FlightQuery;
 import model.internal.FlightResult;
-import model.internal.GDS;
+import model.internal.FlightSearch;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -29,42 +29,33 @@ public class Scrapper {
     public static void main (String [] arguments) throws ExecutionException, InterruptedException {
         configureHttpClient();
 
-        String origin = "BUE";
-        String destination = "TYO";
-        LocalDate dateFrom = LocalDate.of(2018, 10, 5);
-        LocalDate dateTo = LocalDate.of(2019, 4, 1);
-        Integer dayQuantityMin = 16;
-        Integer dayQuantityMax = 19;
-        List<GDS> gds = Arrays.asList(GDS.amadeus(), GDS.sabre(), GDS.worldspan());
+        List<FlightSearch> searches = new ArrayList<>();
+        searches.add(new FlightSearch("BUE", "TYO", LocalDate.of(2018, 10, 5), LocalDate.of(2019, 4, 1), 15, 19));
+        searches.add(new FlightSearch("BUE", "BKK", LocalDate.of(2018, 10, 5), LocalDate.of(2019, 4, 1), 15, 19));
+        searches.add(new FlightSearch("BUE", "MAD", LocalDate.of(2018, 10, 5), LocalDate.of(2019, 4, 1), 15, 19));
+        searches.add(new FlightSearch("BUE", "BCN", LocalDate.of(2018, 10, 5), LocalDate.of(2019, 4, 1), 15, 19));
+        searches.add(new FlightSearch("BUE", "KUL", LocalDate.of(2018, 10, 5), LocalDate.of(2019, 4, 1), 15, 19));
 
-        //ResultHandler resultHandler = new FileResultHandler("flightResults" + origin + "-" + destination + "-" + LocalDateTime.now().toString() + ".txt",22000d);
-        //MailResultHandler mailResultHandler = new MailResultHandler(23500d);
-        DatabaseResultHandler databaseResultHandler = new DatabaseResultHandler();
-
-        List<FlightQuery> flightQueryList = SearchGenerator.generateSearchs(origin, destination, dateFrom, dateTo, dayQuantityMin, dayQuantityMax, gds);
-        System.out.println("Query count: " + flightQueryList.size());
-
-        ForkJoinPool forkJoinPool = new ForkJoinPool(200);
-        forkJoinPool.submit(() ->
-            flightQueryList.parallelStream().forEach(i -> {
-                try {
-                    List<FlightResult> flightResults = scrap(i);
-                    //mailResultHandler.addResult(flightResults);
-                    //resultHandler.addResult(flightResults);
-                    databaseResultHandler.saveQuery(i);
-                    databaseResultHandler.addResult(flightResults);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            })
-        ).get();
-
-
-        System.out.println("All queries finished, " + databaseResultHandler.getResultCount() + " results.");
-        //resultHandler.printResults();
-        //mailResultHandler.printResults();
+        searches.parallelStream().forEach(flightSearch -> runSearch(flightSearch) );
     }
 
+    private static void runSearch(FlightSearch flightSearch) {
+        DatabaseResultHandler databaseResultHandler = new DatabaseResultHandler();
+
+        List<FlightQuery> flightQueryList = QueryGenerator.generateQueries(flightSearch);
+
+        System.out.println("Query count: " + flightQueryList.size());
+
+        flightQueryList.parallelStream().forEach(i -> {
+            try {
+                List<FlightResult> flightResults = scrap(i);
+                databaseResultHandler.saveQuery(i);
+                databaseResultHandler.addResult(flightResults);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     public static List<FlightResult> scrap(FlightQuery flightQuery) throws IOException {
         Request.Builder builder = new Request.Builder()

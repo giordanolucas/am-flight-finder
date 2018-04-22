@@ -23,10 +23,10 @@ public class ResultHandler {
             FlightResult firstFlight = result.get(0);
 
             if(firstFlight.getPrice() < alertPrice){
-                System.err.println("Flight #" + allResults.size() + ": " + getFlightDataString(firstFlight) + " <-- ALERT!!!");
+                System.err.println(getFlightDataString(firstFlight) + " <-- ALERT!!!");
             }
             else{
-                System.out.println("Flight #" + allResults.size() + ": " + getFlightDataString(firstFlight));
+                System.out.println(getFlightDataString(firstFlight));
             }
         }
     }
