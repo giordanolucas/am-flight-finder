@@ -14,19 +14,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Scrapper {
+    private static final String RESULT_COUNT_PER_SEARCH = "4";
+
     private static OkHttpClient client = new OkHttpClient();
 
     static{
-        client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
-        client.setReadTimeout(80, TimeUnit.SECONDS);    // socket timeout
+        client.setConnectTimeout(15, TimeUnit.SECONDS);
+        client.setReadTimeout(80, TimeUnit.SECONDS);
     }
 
     public static List<FlightResult> scrap(FlightQuery flightQuery) throws IOException {
         Request.Builder builder = new Request.Builder()
-                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightQuery.getDateFrom() + "," + flightQuery.getDateTo() + "&from=" + flightQuery.getOrigin() + "," + flightQuery.getDestination() + "&limit=5&offset=0&sortBy=PRICE&to=" + flightQuery.getDestination() + "," + flightQuery.getOrigin())
-                .get()
-                .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");
+                .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightQuery.getDateFrom() + "," + flightQuery.getDateTo() + "&from=" + flightQuery.getOrigin() + "," + flightQuery.getDestination() + "&limit=" +  RESULT_COUNT_PER_SEARCH + "&offset=0&sortBy=PRICE&to=" + flightQuery.getDestination() + "," + flightQuery.getOrigin())
+                .get();
+                //.addHeader("cache-control", "no-cache")
+                //.addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");
 
         if(flightQuery.getGDS() != null && !flightQuery.getGDS().getCode().trim().equalsIgnoreCase("")){
             builder.addHeader("X-AM-PROVIDER", flightQuery.getGDS().getCode());

@@ -60,6 +60,7 @@ public class SearchSchedulerRunner {
                 List<FlightResult> flightResults = Scrapper.scrap(i);
                 databaseResultHandler.saveQuery(i);
                 databaseResultHandler.addResult(flightResults);
+                MailResultHandler.notify(flightSearch, flightResults);
             } catch (IOException e) {
                 e.printStackTrace();
             }

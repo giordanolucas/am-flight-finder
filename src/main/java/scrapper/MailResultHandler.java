@@ -1,26 +1,39 @@
 package scrapper;
 
 import model.internal.FlightResult;
+import model.internal.FlightSearch;
 
-import java.util.LinkedList;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
-public class MailResultHandler extends ResultHandler {
+public class MailResultHandler {
 
-    List<FlightResult> notificationFlights = new LinkedList<>();
+    private static HashMap<FlightSearch, LocalDateTime> sentNotifications = new HashMap<>();
 
-    public MailResultHandler(Double alertPrice) {
-        super(alertPrice);
-    }
-
-    @Override
-    public void addResult(List<FlightResult> result) {
-        super.addResult(result);
-
+    public static void notify(FlightSearch search, List<FlightResult> result) {
         for(FlightResult flight : result){
-            if(flight.getPrice() <= alertPrice){
-                notificationFlights.add(flight);
+            if(flight.getPrice() <= search.getAlertPrice()){
+                if(sentNotifications.containsKey(search)){
+                    if(sentNotifications.get(search).plusHours(3).isBefore(LocalDateTime.now())){
+                        sendNotification(search, flight);
+                        break;
+                    }
+                }
+                else{
+                    sendNotification(search, flight);
+                    break;
+                }
             }
         }
+    }
+
+    private static void sendNotification(FlightSearch search, FlightResult flight){
+        sentNotifications.put(search, LocalDateTime.now());
+
+        String subject = "Cheap flights!! " + search.getDescription();
+        String text = flight.getPriceString() + " :: " + flight.getFlightQuery().printInfo() + " :: " + flight.getAirline();
+
+        MailService.sendMail(subject, text);
     }
 }
