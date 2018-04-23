@@ -15,6 +15,11 @@ public class Program {
         searches.add(new FlightSearch("BUE", "MAD", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 15, 19, 19000d));
         searches.add(new FlightSearch("BUE", "BCN", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 15, 19, 19000d));
         searches.add(new FlightSearch("BUE", "KUL", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 15, 19, 20000d));
+        searches.add(new FlightSearch("BUE", "HAV", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 13, 17, 15000d));
+        searches.add(new FlightSearch("BUE", "VRA", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 13, 17, 15000d));
+        searches.add(new FlightSearch("BUE", "CUN", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 13, 17, 15000d));
+        searches.add(new FlightSearch("BUE", "KIN", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 13, 17, 15000d));
+        searches.add(new FlightSearch("BUE", "RUB", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 13, 17, 15000d));
 
         SearchSchedulerRunner schedulerRunner = new SearchSchedulerRunner(searches);
         schedulerRunner.run();
