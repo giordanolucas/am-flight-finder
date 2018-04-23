@@ -23,15 +23,4 @@ public class MailResultHandler extends ResultHandler {
             }
         }
     }
-
-    @Override
-    public void printResults() {
-        StringBuilder mailMessage = new StringBuilder();
-
-        notificationFlights.stream()
-                .sorted((x, y) -> (x.getPrice().equals(y.getPrice())) ? 0 : (x.getPrice() > y.getPrice() ? 1 : -1))
-                .forEach(x -> mailMessage.append(getFlightDataString(x)).append(System.lineSeparator()));
-
-        MailService.sendMail("Flight notifications!", mailMessage.toString());
-    }
 }

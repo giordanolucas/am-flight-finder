@@ -1,11 +1,16 @@
 package scrapper;
 
+import model.internal.FlightResult;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class FileResultHandler extends ResultHandler {
 
     private String filename;
+    private List<FlightResult> allResults = new ArrayList<>();
 
     public FileResultHandler(String filename){
         super();
@@ -17,9 +22,7 @@ public class FileResultHandler extends ResultHandler {
         this.filename = filename;
     }
 
-    @Override
     public void printResults() {
-
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"))) {
             allResults.stream()
                 .filter(Objects::nonNull)
@@ -36,7 +39,5 @@ public class FileResultHandler extends ResultHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        super.printResults();
     }
 }
