@@ -14,10 +14,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Scrapper {
-    private static OkHttpClient client;
+    private static OkHttpClient client = new OkHttpClient();
 
     static{
-        client = new OkHttpClient();
         client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
         client.setReadTimeout(80, TimeUnit.SECONDS);    // socket timeout
     }
