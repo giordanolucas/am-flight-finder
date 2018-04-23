@@ -78,6 +78,6 @@ public class FlightSearch {
     }
 
     public String getDescription(){
-        return origin + "->" + destination + "::" + dateFrom + "->" + dateTo + "::" + dayQuantityMin + "->" + dayQuantityMax;
+        return origin + "->" + destination + "::" + dateFrom + "->" + dateTo + "::" + dayQuantityMin + "->" + dayQuantityMax + "(" + alertPrice + ")";
     }
 }
