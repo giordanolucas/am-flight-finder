@@ -78,6 +78,6 @@ public class FlightQuery {
     }
 
     public String printInfo() {
-        return origin + " -> " + destination + ": " + getDateFromString() + " -> " + getDateToString() + " (" + dayQuantity() + " days) [" + gds.getName() + "]";
+        return origin + " -> " + destination + ": " + getDateFromString() + " -> " + getDateToString() + " (" + dayQuantity() + " days)" + (gds != null ? " [" + gds.getName() + "]" : "");
     }
 }

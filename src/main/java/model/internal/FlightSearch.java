@@ -5,13 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FlightSearch {
-    private String origin = "BUE";
-    private String destination = "TYO";
-    private LocalDate dateFrom = LocalDate.of(2018, 10, 5);
-    private LocalDate dateTo = LocalDate.of(2019, 4, 1);
-    private Integer dayQuantityMin = 16;
-    private Integer dayQuantityMax = 19;
-    private List<GDS> gds = Arrays.asList(GDS.amadeus(), GDS.sabre(), GDS.worldspan());
+    private String origin;
+    private String destination;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
+    private Integer dayQuantityMin;
+    private Integer dayQuantityMax;
+    private List<GDS> gds;
+    private Integer everyHours = 4;
 
     public FlightSearch(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, Integer dayQuantityMin, Integer dayQuantityMax){
         this.origin = origin;
@@ -59,5 +60,17 @@ public class FlightSearch {
 
     public List<GDS> getGds() {
         return gds;
+    }
+
+    public Integer getEveryHours() {
+        return everyHours;
+    }
+
+    public void setEveryHours(Integer everyHours) {
+        this.everyHours = everyHours;
+    }
+
+    public String getDescription(){
+        return origin + "->" + destination + "::" + dateFrom + "->" + dateTo + "::" + dayQuantityMin + "->" + dayQuantityMax;
     }
 }

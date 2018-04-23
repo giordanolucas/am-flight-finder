@@ -15,7 +15,7 @@ public class FlightQueryDal {
             preparedStatement.setString(2, query.getDestination());
             preparedStatement.setDate(3,java.sql.Date.valueOf(query.getDateFrom()));
             preparedStatement.setDate(4,java.sql.Date.valueOf(query.getDateTo()));
-            preparedStatement.setString(5, query.getGDS().getCode());
+            preparedStatement.setString(5, query.getGDS() != null ? query.getGDS().getCode() : "default");
 
             preparedStatement.executeUpdate();
 

@@ -4,7 +4,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import scrapper.ProgramProperties;
 
 import java.sql.*;
-import java.util.concurrent.Semaphore;
 
 public class DatabaseConnectionService {
     private static final BasicDataSource dataSource = new BasicDataSource();
@@ -13,6 +12,8 @@ public class DatabaseConnectionService {
         dataSource.setUrl("jdbc:mysql://" + ProgramProperties.getDatabaseHostPort() + "/" + ProgramProperties.getDatabaseName());
         dataSource.setUsername(ProgramProperties.getDatabaseUsername());
         dataSource.setPassword(ProgramProperties.getDatabasePassword());
+        dataSource.setMaxTotal(20);
+        dataSource.setMaxIdle(10);
     }
 
     public static Connection getConnection(){
