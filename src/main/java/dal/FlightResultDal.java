@@ -12,7 +12,7 @@ public class FlightResultDal {
     private static Gson gson = new Gson();
 
     public static void saveFlightResult(FlightResult flightResult) throws SQLException {
-        try(Connection connection = DatabaseConnectionService.getConnection()){
+        try (Connection connection = DatabaseConnectionService.getConnection()) {
             String sql = "INSERT INTO flightResult (idFlightQuery, price, airline, timeCombinationsJson)" +
                     "VALUES (?, ?, ?, ?)";
 
@@ -27,13 +27,13 @@ public class FlightResultDal {
     }
 
     public static void saveFlightResultBatch(List<FlightResult> flightResultBatch) throws SQLException {
-        try(Connection connection = DatabaseConnectionService.getConnection()){
+        try (Connection connection = DatabaseConnectionService.getConnection()) {
             String sql = "INSERT INTO flightResult (idFlightQuery, price, airline, timeCombinationsJson)" +
                     "VALUES (?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            for(FlightResult flightResult : flightResultBatch){
+            for (FlightResult flightResult : flightResultBatch) {
                 preparedStatement.setInt(1, flightResult.getFlightQuery().getIdFlightQuery());
                 preparedStatement.setDouble(2, flightResult.getPrice());
                 preparedStatement.setString(3, flightResult.getAirline());

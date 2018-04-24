@@ -7,27 +7,27 @@ import java.util.List;
 public class ResultHandler {
     protected double alertPrice = 0;
 
-    public ResultHandler(){}
+    public ResultHandler() {
+    }
 
-    public ResultHandler(Double alertPrice){
+    public ResultHandler(Double alertPrice) {
         this.alertPrice = alertPrice;
     }
 
-    public void addResult(List<FlightResult> result){
-        if(result.size() > 0){
+    protected static String getFlightDataString(FlightResult flight) {
+        return flight.getPriceString() + " :: " + flight.getFlightQuery().printInfo() + " :: " + flight.getAirline();
+    }
+
+    public void addResult(List<FlightResult> result) {
+        if (result.size() > 0) {
 
             FlightResult firstFlight = result.get(0);
 
-            if(firstFlight.getPrice() < alertPrice){
+            if (firstFlight.getPrice() < alertPrice) {
                 System.err.println(getFlightDataString(firstFlight) + " <-- ALERT!!!");
-            }
-            else{
+            } else {
                 System.out.println(getFlightDataString(firstFlight));
             }
         }
-    }
-
-    protected static String getFlightDataString(FlightResult flight){
-        return flight.getPriceString() + " :: " + flight.getFlightQuery().printInfo() + " :: " + flight.getAirline();
     }
 }

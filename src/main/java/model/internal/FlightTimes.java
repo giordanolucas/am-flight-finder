@@ -10,7 +10,7 @@ public class FlightTimes {
     private LocalDateTime arrival;
     private String duration;
 
-    public FlightTimes(String departureDateString, String departureTimeString, String arrivalDateString, String arrivalTimeString, String duration){
+    public FlightTimes(String departureDateString, String departureTimeString, String arrivalDateString, String arrivalTimeString, String duration) {
 
         LocalDate departureDate = LocalDate.parse(departureDateString, DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate arrivalDate = LocalDate.parse(arrivalDateString, DateTimeFormatter.ISO_LOCAL_DATE);
@@ -24,7 +24,7 @@ public class FlightTimes {
         this.duration = duration;
     }
 
-    public FlightTimes(Integer idFlightTimes, LocalDateTime departure, LocalDateTime arrival, String duration){
+    public FlightTimes(Integer idFlightTimes, LocalDateTime departure, LocalDateTime arrival, String duration) {
         this.departure = departure;
         this.arrival = arrival;
         this.duration = duration;

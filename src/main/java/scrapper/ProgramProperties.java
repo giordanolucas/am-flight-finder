@@ -8,7 +8,7 @@ public class ProgramProperties {
     private static Properties properties = new Properties();
     private static boolean initialized = false;
 
-    private static void initialize(){
+    private static void initialize() {
         InputStream input = null;
 
         try {
@@ -29,50 +29,50 @@ public class ProgramProperties {
         }
     }
 
-    private static Properties getProperties(){
-        if(!initialized)
+    private static Properties getProperties() {
+        if (!initialized)
             initialize();
 
         return properties;
     }
 
-    public static String getSmtpHost(){
+    public static String getSmtpHost() {
         return getProperties().getProperty("mail.smtphost");
     }
 
-    public static String getSmtpPort(){
+    public static String getSmtpPort() {
         return getProperties().getProperty("mail.smtpport");
     }
 
-    public static String getMailUsername(){
+    public static String getMailUsername() {
         return getProperties().getProperty("mail.username");
     }
 
-    public static String getMailPassword(){
+    public static String getMailPassword() {
         return getProperties().getProperty("mail.password");
     }
 
-    public static boolean getMailEnableTls(){
+    public static boolean getMailEnableTls() {
         return getProperties().getProperty("mail.enabletls").equalsIgnoreCase("true");
     }
 
-    public static String getMailReceiptent(){
+    public static String getMailReceiptent() {
         return getProperties().getProperty("mail.receiptent");
     }
 
-    public static String getDatabaseUsername(){
+    public static String getDatabaseUsername() {
         return getProperties().getProperty("database.username");
     }
 
-    public static String getDatabasePassword(){
+    public static String getDatabasePassword() {
         return getProperties().getProperty("database.password");
     }
 
-    public static String getDatabaseHostPort(){
+    public static String getDatabaseHostPort() {
         return getProperties().getProperty("database.hostport");
     }
 
-    public static String getDatabaseName(){
+    public static String getDatabaseName() {
         return getProperties().getProperty("database.name");
     }
 

@@ -1,8 +1,8 @@
-
 package model.am;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")

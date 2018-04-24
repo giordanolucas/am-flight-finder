@@ -1,6 +1,9 @@
 package scrapper;
 
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -12,7 +15,7 @@ public class MailService {
 
     public static boolean sendMail(String subject, String text) {
 
-        try{
+        try {
             final String username = ProgramProperties.getMailUsername();
             final String password = ProgramProperties.getMailPassword();
 
@@ -42,15 +45,14 @@ public class MailService {
             System.out.println("Mail sent! (" + subject + ")");
 
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Could not send mail");
             System.err.println(subject);
             System.err.println(text);
             System.err.println(e.getMessage());
             e.printStackTrace();
 
-            if(semaphore.availablePermits() == 0){
+            if (semaphore.availablePermits() == 0) {
                 semaphore.release();
             }
 

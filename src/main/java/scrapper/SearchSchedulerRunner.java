@@ -21,25 +21,24 @@ public class SearchSchedulerRunner {
 
     private DatabaseResultHandler databaseResultHandler = new DatabaseResultHandler();
 
-    public SearchSchedulerRunner(List<FlightSearch> searches){
+    public SearchSchedulerRunner(List<FlightSearch> searches) {
         this.searches = searches;
     }
 
-    public void run(){
+    public void run() {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> startSearches(), 0, 1, TimeUnit.MINUTES);
     }
 
-    private void startSearches(){
-        for(FlightSearch search : searches){
-            if(!running.contains(search)){
-                if(lastRun.containsKey(search)){
-                    if(lastRun.get(search).plusHours(search.getEveryHours()).isBefore(LocalDateTime.now())){
+    private void startSearches() {
+        for (FlightSearch search : searches) {
+            if (!running.contains(search)) {
+                if (lastRun.containsKey(search)) {
+                    if (lastRun.get(search).plusHours(search.getEveryHours()).isBefore(LocalDateTime.now())) {
                         Thread thread = new Thread(() -> runSearch(search));
                         thread.start();
                     }
-                }
-                else{
+                } else {
                     Thread thread = new Thread(() -> runSearch(search));
                     thread.start();
                 }

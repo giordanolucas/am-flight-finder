@@ -5,7 +5,7 @@ import java.util.List;
 public class TimeCombination {
     private List<FlightTimes> flightTimes;
 
-    public TimeCombination(List<FlightTimes> flightTimes){
+    public TimeCombination(List<FlightTimes> flightTimes) {
         this.flightTimes = flightTimes;
     }
 

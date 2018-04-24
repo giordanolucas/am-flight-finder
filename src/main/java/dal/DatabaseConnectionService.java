@@ -3,7 +3,10 @@ package dal;
 import org.apache.commons.dbcp2.BasicDataSource;
 import scrapper.ProgramProperties;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DatabaseConnectionService {
     private static final BasicDataSource dataSource = new BasicDataSource();
@@ -16,7 +19,7 @@ public class DatabaseConnectionService {
         dataSource.setMaxIdle(10);
     }
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
@@ -29,7 +32,7 @@ public class DatabaseConnectionService {
         Integer generatedId = 0;
 
         ResultSet rs = stmt.getGeneratedKeys();
-        if (rs.next()){
+        if (rs.next()) {
             generatedId = rs.getInt(1);
         }
 

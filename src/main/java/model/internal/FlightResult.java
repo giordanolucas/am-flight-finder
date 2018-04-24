@@ -19,7 +19,7 @@ public class FlightResult {
     private List<TimeCombination> timeCombinations = new LinkedList<>();
     private LocalDateTime resultDate;
 
-    public FlightResult(Integer idFlightResult, FlightQuery flightQuery, Double price, String airline, LocalDateTime resultDate, String flightCombinationsJson){
+    public FlightResult(Integer idFlightResult, FlightQuery flightQuery, Double price, String airline, LocalDateTime resultDate, String flightCombinationsJson) {
         this.idFlightResult = idFlightResult;
         this.flightQuery = flightQuery;
         this.price = price;
@@ -28,7 +28,7 @@ public class FlightResult {
         this.resultDate = resultDate;
     }
 
-    public FlightResult(FlightQuery flightQuery, Cluster cluster){
+    public FlightResult(FlightQuery flightQuery, Cluster cluster) {
         this.flightQuery = flightQuery;
         this.price = cluster.getPrice().getTotal();
         this.airline = cluster.getSegments().get(0).getChoices().get(0).getLegs().get(0).getMarketingCarrier().getName();
@@ -37,19 +37,19 @@ public class FlightResult {
         List<Choice> firstFlightChoices = cluster.getSegments().get(0).getChoices();
         List<Choice> secondFlightChoices = cluster.getSegments().get(1).getChoices();
 
-        for(Choice choiceFirstFlight : firstFlightChoices){
+        for (Choice choiceFirstFlight : firstFlightChoices) {
             FlightTimes time1 = new FlightTimes(choiceFirstFlight.getDepartureDate(),
-                                                choiceFirstFlight.getDepartureTime(),
-                                                choiceFirstFlight.getArrivalDate(),
-                                                choiceFirstFlight.getArrivalTime(),
-                                                choiceFirstFlight.getFlightDuration());
+                    choiceFirstFlight.getDepartureTime(),
+                    choiceFirstFlight.getArrivalDate(),
+                    choiceFirstFlight.getArrivalTime(),
+                    choiceFirstFlight.getFlightDuration());
 
-            for(Choice choiceSecondFlight : secondFlightChoices){
+            for (Choice choiceSecondFlight : secondFlightChoices) {
                 FlightTimes time2 = new FlightTimes(choiceSecondFlight.getDepartureDate(),
-                                                    choiceSecondFlight.getDepartureTime(),
-                                                    choiceSecondFlight.getArrivalDate(),
-                                                    choiceSecondFlight.getArrivalTime(),
-                                                    choiceSecondFlight.getFlightDuration());
+                        choiceSecondFlight.getDepartureTime(),
+                        choiceSecondFlight.getArrivalDate(),
+                        choiceSecondFlight.getArrivalTime(),
+                        choiceSecondFlight.getFlightDuration());
 
                 timeCombinations.add(new TimeCombination(Arrays.asList(time1, time2)));
             }

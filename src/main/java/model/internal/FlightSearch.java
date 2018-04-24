@@ -15,7 +15,7 @@ public class FlightSearch {
     private Integer everyHours = 4;
     private Double alertPrice;
 
-    public FlightSearch(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, Integer dayQuantityMin, Integer dayQuantityMax, Double alertPrice){
+    public FlightSearch(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, Integer dayQuantityMin, Integer dayQuantityMax, Double alertPrice) {
         this.origin = origin;
         this.destination = destination;
         this.dateFrom = dateFrom;
@@ -26,7 +26,7 @@ public class FlightSearch {
         this.alertPrice = alertPrice;
     }
 
-    public FlightSearch(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, Integer dayQuantityMin, Integer dayQuantityMax, Double alertPrice, List<GDS> gds){
+    public FlightSearch(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, Integer dayQuantityMin, Integer dayQuantityMax, Double alertPrice, List<GDS> gds) {
         this.origin = origin;
         this.destination = destination;
         this.dateFrom = dateFrom;
@@ -77,7 +77,7 @@ public class FlightSearch {
         return alertPrice;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return origin + "->" + destination + "::" + dateFrom + "->" + dateTo + "::" + dayQuantityMin + "->" + dayQuantityMax + "(" + alertPrice + ")";
     }
 }

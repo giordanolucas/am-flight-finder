@@ -18,15 +18,14 @@ import java.util.concurrent.ExecutionException;
 public class Program {
     private static final String CONFIG_FILE = "search-parameters.json";
 
-    public static void main (String [] arguments) throws ExecutionException, InterruptedException {
+    public static void main(String[] arguments) throws ExecutionException, InterruptedException {
 
         List<FlightSearch> searches = getConfigFileSearches(CONFIG_FILE);
 
-        if(searches.isEmpty()){
+        if (searches.isEmpty()) {
             System.out.println("No search params found. Falling back to default params.");
             searches = getDefaultSearches();
-        }
-        else{
+        } else {
             System.out.println(searches.size() + " searches loaded");
         }
 
@@ -34,7 +33,7 @@ public class Program {
         schedulerRunner.run();
     }
 
-    private static List<FlightSearch> getConfigFileSearches(String relativePath){
+    private static List<FlightSearch> getConfigFileSearches(String relativePath) {
         Path path = Paths.get(relativePath);
         System.out.println("Trying to load search parameters from " + path.toAbsolutePath().toString());
 
@@ -46,19 +45,18 @@ public class Program {
             return new LinkedList<>();
         }
 
-        try{
+        try {
             Gson gson = new Gson();
             FlightSearch[] config = gson.fromJson(reader, FlightSearch[].class);
             return Arrays.asList(config);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.err.println("Could not parse file contents");
         }
 
         return new LinkedList<>();
     }
 
-    private static List<FlightSearch> getDefaultSearches(){
+    private static List<FlightSearch> getDefaultSearches() {
         System.out.println("Using default search parameters");
         List<FlightSearch> searches = new ArrayList<>();
         searches.add(new FlightSearch("BUE", "TYO", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 15, 19, 20000d));

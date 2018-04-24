@@ -15,7 +15,7 @@ public class FlightQuery {
     private LocalDate dateTo;
     private LocalDateTime queryDate;
 
-    public FlightQuery(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, GDS gds){
+    public FlightQuery(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, GDS gds) {
         this.origin = origin;
         this.destination = destination;
         this.dateFrom = dateFrom;
@@ -23,7 +23,7 @@ public class FlightQuery {
         this.gds = gds;
     }
 
-    public FlightQuery(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, GDS gds, Integer idFlightQuery, LocalDateTime queryDate){
+    public FlightQuery(String origin, String destination, LocalDate dateFrom, LocalDate dateTo, GDS gds, Integer idFlightQuery, LocalDateTime queryDate) {
         this.origin = origin;
         this.destination = destination;
         this.dateFrom = dateFrom;
@@ -57,7 +57,7 @@ public class FlightQuery {
         return getAmFormatedDate(dateTo);
     }
 
-    public Long dayQuantity(){
+    public Long dayQuantity() {
         return ChronoUnit.DAYS.between(dateFrom, dateTo);
     }
 

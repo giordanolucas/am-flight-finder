@@ -7,13 +7,12 @@ import model.internal.FlightResult;
 
 import java.util.List;
 
-public class DatabaseResultHandler extends ResultHandler{
+public class DatabaseResultHandler extends ResultHandler {
 
-    public void saveQuery(FlightQuery query){
-        try{
+    public void saveQuery(FlightQuery query) {
+        try {
             FlightQueryDal.saveFlightQuery(query);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error saving flight query to database");
             System.err.println(e.getMessage());
             e.printStackTrace();
@@ -24,10 +23,9 @@ public class DatabaseResultHandler extends ResultHandler{
     public void addResult(List<FlightResult> result) {
         super.addResult(result);
 
-        try{
+        try {
             FlightResultDal.saveFlightResultBatch(result);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error saving flight result to database");
             System.err.println(e.getMessage());
             e.printStackTrace();
