@@ -30,8 +30,6 @@ public class Program {
             System.out.println(searches.size() + " searches loaded");
         }
 
-        (new Gson()).toJson(searches);
-
         SearchSchedulerRunner schedulerRunner = new SearchSchedulerRunner(searches);
         schedulerRunner.run();
     }
