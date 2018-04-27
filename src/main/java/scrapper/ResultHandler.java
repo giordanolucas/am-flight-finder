@@ -20,13 +20,10 @@ public class ResultHandler {
 
     public void addResult(List<FlightResult> result) {
         if (result.size() > 0) {
-
             FlightResult firstFlight = result.get(0);
 
             if (firstFlight.getPrice() < alertPrice) {
-                System.err.println(getFlightDataString(firstFlight) + " <-- ALERT!!!");
-            } else {
-                System.out.println(getFlightDataString(firstFlight));
+                System.out.println(getFlightDataString(firstFlight) + " <-- ALERT!!!");
             }
         }
     }
