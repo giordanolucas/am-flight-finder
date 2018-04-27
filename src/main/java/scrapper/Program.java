@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import model.internal.FlightSearch;
 import model.internal.dto.JsonFlightSearch;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.cli.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,15 +15,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+
 public class Program {
-    private static final String CONFIG_FILE = "search-parameters.json";
+    private static String configFilePath = "search-parameters.json";
+    private static boolean shouldResume = false;
 
-    public static void main(String[] arguments) throws ExecutionException, InterruptedException {
+    public static void main(String[] arguments) {
+        loadArgs(arguments);
 
-        List<FlightSearch> searches = getConfigFileSearches(CONFIG_FILE);
+        List<FlightSearch> searches = getConfigFileSearches(configFilePath);
 
         if (searches.isEmpty()) {
             System.out.println("No search params found. Falling back to default params.");
@@ -34,6 +36,37 @@ public class Program {
 
         SearchSchedulerRunner schedulerRunner = new SearchSchedulerRunner(searches);
         schedulerRunner.run();
+    }
+
+    private static void loadArgs(String[] args){
+        Options options = new Options();
+
+        Option input = new Option("i", "input", true, "Search parameters file path");
+        input.setRequired(false);
+        options.addOption(input);
+
+        Option resume = new Option("r", "resume", false, "Resumes a previous execution");
+        resume.setRequired(false);
+        options.addOption(resume);
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        CommandLine cmd;
+
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            formatter.printHelp("utility-name", options);
+
+            System.exit(1);
+            return;
+        }
+
+        if(cmd.hasOption("input")){
+            configFilePath = cmd.getOptionValue("input");
+        }
+        shouldResume = cmd.hasOption("resume");
     }
 
     private static List<FlightSearch> getConfigFileSearches(String relativePath) {
