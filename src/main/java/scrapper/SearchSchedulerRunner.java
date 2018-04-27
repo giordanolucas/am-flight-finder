@@ -50,7 +50,7 @@ public class SearchSchedulerRunner {
         running.add(flightSearch);
         lastRun.put(flightSearch, LocalDateTime.now());
 
-        System.out.println("Starting search: " + flightSearch.getDescription());
+        System.out.println("Starting search: " + flightSearch.getDescription() + " - " + LocalDateTime.now());
 
         List<FlightQuery> flightQueryList = QueryGenerator.generateQueries(flightSearch);
 
@@ -66,6 +66,6 @@ public class SearchSchedulerRunner {
         });
 
         running.remove(flightSearch);
-        System.out.println("Search ended: " + flightSearch.getDescription());
+        System.out.println("Search ended: " + flightSearch.getDescription() + " - " + LocalDateTime.now());
     }
 }
