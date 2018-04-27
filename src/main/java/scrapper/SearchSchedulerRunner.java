@@ -66,5 +66,6 @@ public class SearchSchedulerRunner {
         });
 
         running.remove(flightSearch);
+        System.out.println("Search ended: " + flightSearch.getDescription());
     }
 }
