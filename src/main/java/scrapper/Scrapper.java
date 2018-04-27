@@ -6,6 +6,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import model.internal.FlightQuery;
 import model.internal.FlightResult;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -20,18 +21,16 @@ public class Scrapper {
     private static OkHttpClient client = new OkHttpClient();
 
     static {
-        client.setConnectTimeout(15, TimeUnit.SECONDS);
-        client.setReadTimeout(80, TimeUnit.SECONDS);
+        client.setConnectTimeout(20, TimeUnit.SECONDS);
+        client.setReadTimeout(90, TimeUnit.SECONDS);
     }
 
     public static List<FlightResult> scrap(FlightQuery flightQuery) throws IOException {
         Request.Builder builder = new Request.Builder()
                 .url("https://almundo.com.ar/flights/async/itineraries?adults=1&date=" + flightQuery.getDateFrom() + "," + flightQuery.getDateTo() + "&from=" + flightQuery.getOrigin() + "," + flightQuery.getDestination() + "&limit=" + RESULT_COUNT_PER_SEARCH + "&offset=0&sortBy=PRICE&to=" + flightQuery.getDestination() + "," + flightQuery.getOrigin())
                 .get();
-        //.addHeader("cache-control", "no-cache")
-        //.addHeader("postman-token", "10c0de7c-a4c5-2be3-55a9-89a660bee80b");
 
-        if (flightQuery.getGDS() != null && !flightQuery.getGDS().getCode().trim().equalsIgnoreCase("")) {
+        if (flightQuery.getGDS() != null && StringUtils.isNotBlank(flightQuery.getGDS().getCode())) {
             builder.addHeader("X-AM-PROVIDER", flightQuery.getGDS().getCode());
         }
 
@@ -66,6 +65,11 @@ public class Scrapper {
         } finally {
             if (response != null && response.body() != null) {
                 response.body().close();
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

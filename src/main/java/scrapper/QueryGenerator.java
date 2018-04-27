@@ -26,12 +26,12 @@ public class QueryGenerator {
         List<FlightQuery> flightQueryList = new LinkedList<>();
 
         for (int i = search.getDayQuantityMin(); i <= search.getDayQuantityMax(); i++) {
+            flightQueryList.addAll(generateQuery(search.getOrigin(), search.getDestination(), search.getDateFrom(), search.getDateTo(), i, null));
+
             if (search.getGds() != null && search.getGds().size() > 0) {
                 for (GDS gds : search.getGds()) {
                     flightQueryList.addAll(generateQuery(search.getOrigin(), search.getDestination(), search.getDateFrom(), search.getDateTo(), i, gds));
                 }
-            } else {
-                flightQueryList.addAll(generateQuery(search.getOrigin(), search.getDestination(), search.getDateFrom(), search.getDateTo(), i, null));
             }
 
         }
