@@ -94,7 +94,6 @@ public class Program {
     }
 
     private static List<FlightSearch> getDefaultSearches() {
-        System.out.println("Using default search parameters");
         List<FlightSearch> searches = new ArrayList<>();
         searches.add(new FlightSearch("BUE", "TYO", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 15, 19, 20000d));
         searches.add(new FlightSearch("BUE", "BKK", LocalDate.of(2018, 10, 1), LocalDate.of(2019, 4, 1), 15, 19, 20000d));
