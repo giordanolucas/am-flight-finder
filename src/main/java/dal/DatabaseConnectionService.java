@@ -12,7 +12,7 @@ public class DatabaseConnectionService {
     private static final BasicDataSource dataSource = new BasicDataSource();
 
     static {
-        dataSource.setUrl("jdbc:mysql://" + ProgramProperties.getDatabaseHostPort() + "/" + ProgramProperties.getDatabaseName());
+        dataSource.setUrl("jdbc:mysql://" + ProgramProperties.getDatabaseHostPort() + "/" + ProgramProperties.getDatabaseName() + "?useSSL=false");
         dataSource.setUsername(ProgramProperties.getDatabaseUsername());
         dataSource.setPassword(ProgramProperties.getDatabasePassword());
         dataSource.setMaxTotal(20);
