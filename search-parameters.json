@@ -2,320 +2,110 @@
   {
     "origin": "BUE",
     "destination": "TYO",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
     "dayQuantityMin": 15,
     "dayQuantityMax": 19,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 20000.0
   },
   {
     "origin": "BUE",
     "destination": "BKK",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
     "dayQuantityMin": 15,
     "dayQuantityMax": 19,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 20000.0
   },
   {
     "origin": "BUE",
     "destination": "MAD",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
     "dayQuantityMin": 15,
     "dayQuantityMax": 19,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 19000.0
   },
   {
     "origin": "BUE",
     "destination": "BCN",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
     "dayQuantityMin": 15,
     "dayQuantityMax": 19,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 19000.0
   },
   {
     "origin": "BUE",
     "destination": "KUL",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
     "dayQuantityMin": 15,
     "dayQuantityMax": 19,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 20000.0
   },
   {
     "origin": "BUE",
     "destination": "HAV",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
-    "dayQuantityMin": 13,
-    "dayQuantityMax": 17,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
+    "dayQuantityMin": 15,
+    "dayQuantityMax": 19,
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 15000.0
   },
   {
     "origin": "BUE",
     "destination": "VRA",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
-    "dayQuantityMin": 13,
-    "dayQuantityMax": 17,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
+    "dayQuantityMin": 15,
+    "dayQuantityMax": 19,
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 15000.0
   },
   {
     "origin": "BUE",
     "destination": "CUN",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
-    "dayQuantityMin": 13,
-    "dayQuantityMax": 17,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
+    "dayQuantityMin": 15,
+    "dayQuantityMax": 19,
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 15000.0
   },
   {
     "origin": "BUE",
     "destination": "KIN",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
-    "dayQuantityMin": 13,
-    "dayQuantityMax": 17,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
+    "dayQuantityMin": 15,
+    "dayQuantityMax": 19,
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 15000.0
   },
   {
     "origin": "BUE",
     "destination": "RUB",
-    "dateFrom": {
-      "year": 2018,
-      "month": 10,
-      "day": 1
-    },
-    "dateTo": {
-      "year": 2019,
-      "month": 4,
-      "day": 1
-    },
-    "dayQuantityMin": 13,
-    "dayQuantityMax": 17,
-    "gds": [
-      {
-        "name": "Amadeus",
-        "code": "AMA"
-      },
-      {
-        "name": "Sabre",
-        "code": "SAB"
-      },
-      {
-        "name": "Worldspan",
-        "code": "WOR"
-      }
-    ],
+    "dateFrom": "2018-10-01",
+    "dateTo": "2019-04-01",
+    "dayQuantityMin": 15,
+    "dayQuantityMax": 19,
+    "gds": ["AMA", "SAB", "WOR"],
     "everyHours": 4,
     "alertPrice": 15000.0
   }

@@ -9,6 +9,19 @@ public class GDS {
         this.code = code;
     }
 
+    public static GDS getByCode(String code) {
+        if(amadeus().getCode().equalsIgnoreCase(code))
+            return amadeus();
+
+        if(worldspan().getCode().equalsIgnoreCase(code))
+            return worldspan();
+
+        if(sabre().getCode().equalsIgnoreCase(code))
+            return sabre();
+
+        return null;
+    }
+
     public static GDS amadeus() {
         return new GDS("Amadeus", "AMA");
     }

@@ -3,6 +3,8 @@ package scrapper;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import model.internal.FlightSearch;
+import model.internal.dto.JsonFlightSearch;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class Program {
     private static final String CONFIG_FILE = "search-parameters.json";
@@ -47,10 +50,11 @@ public class Program {
 
         try {
             Gson gson = new Gson();
-            FlightSearch[] config = gson.fromJson(reader, FlightSearch[].class);
-            return Arrays.asList(config);
+            JsonFlightSearch[] config = gson.fromJson(reader, JsonFlightSearch[].class);
+            return Arrays.stream(config).map(JsonFlightSearch::getFlightSearch).collect(Collectors.toList());
         } catch (Exception e) {
             System.err.println("Could not parse file contents");
+            System.err.println(e.getMessage());
         }
 
         return new LinkedList<>();
