@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class Scrapper {
     private static final String RESULT_COUNT_PER_SEARCH = "4";
 
+    private static Gson gson = new Gson();
     private static OkHttpClient client = new OkHttpClient();
 
     static {
@@ -41,37 +42,36 @@ public class Scrapper {
 
     private static List<FlightResult> getScrappedFlights(FlightQuery flightQuery, Request request) throws IOException {
         Response response = null;
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         try {
             response = client.newCall(request).execute();
 
-            model.am.FlightResult flightResult;
             try {
-                Gson gson = new Gson();
-                flightResult = gson.fromJson(response.body().charStream(), model.am.FlightResult.class);
-            } catch (Exception e) {
-                System.out.println("Error getting object from JSON: " + flightQuery.printInfo());
-                return new ArrayList<>();
-            }
+                model.am.FlightResult flightResult = gson.fromJson(response.body().charStream(), model.am.FlightResult.class);
 
-            try {
                 return flightResult.getResults().getClusters()
                         .stream().map(x -> new FlightResult(flightQuery, x)).collect(Collectors.toList());
-            } catch (NullPointerException e) {
-                System.out.println("NPE for " + flightQuery.printInfo() + ". Date is probably out of range.");
-                return new ArrayList<>();
+
+            } catch (Throwable e) {
+                System.out.println("Error scrapping flights: " + flightQuery.printInfo());
+                e.printStackTrace();
             }
+
         } catch (SocketTimeoutException e) {
             return getScrappedFlights(flightQuery, request);
+
         } finally {
             if (response != null && response.body() != null) {
                 response.body().close();
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
-    }
 
+        return new ArrayList<>();
+    }
 }

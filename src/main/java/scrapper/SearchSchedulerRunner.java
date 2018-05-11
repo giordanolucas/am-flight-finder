@@ -54,12 +54,15 @@ public class SearchSchedulerRunner {
 
         List<FlightQuery> flightQueryList = QueryGenerator.generateQueries(flightSearch);
 
-        flightQueryList.parallelStream().forEach(i -> {
+        flightQueryList.parallelStream().forEach(flightQuery -> {
             try {
-                List<FlightResult> flightResults = Scrapper.scrap(i);
-                databaseResultHandler.saveQuery(i);
-                databaseResultHandler.addResult(flightResults);
-                MailResultHandler.notify(flightSearch, flightResults);
+                List<FlightResult> flightResults = Scrapper.scrap(flightQuery);
+                databaseResultHandler.saveQuery(flightQuery);
+
+                if(flightResults != null && flightResults.size() > 0){
+                    databaseResultHandler.addResult(flightResults);
+                    MailResultHandler.notify(flightSearch, flightResults);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
